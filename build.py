@@ -69,15 +69,6 @@ ADDRESS_LINES = [
 EMAIL = "merdeka@agmogroup.com"
 PHONE = "+603-7664 8515"
 
-TOPICS = [
-    "AI Sovereignty as a Service",
-    "LLM Training as a Service",
-    "LLM Gig Economy / Curatorship",
-    "Partnerships",
-    "Media / Press",
-    "Other",
-]
-
 # ---------------------------------------------------------------------------
 # Tiny markdown -> HTML (only the subset our blog posts actually use)
 # ---------------------------------------------------------------------------
@@ -227,7 +218,6 @@ def footer_html():
 
 
 def contact_section():
-    topic_opts = "\n            ".join(f'<option>{t}</option>' for t in TOPICS)
     return f"""
   <section id="contact">
     <div class="container">
@@ -257,15 +247,9 @@ def contact_section():
             <input type="hidden" name="_subject" value="New enquiry from merdekallm.com">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
-            <div class="form-row">
-              <div class="field">
-                <label for="fname">First name *</label>
-                <input id="fname" name="First Name" type="text" required>
-              </div>
-              <div class="field">
-                <label for="lname">Last name</label>
-                <input id="lname" name="Last Name" type="text">
-              </div>
+            <div class="field">
+              <label for="name">Name *</label>
+              <input id="name" name="Name" type="text" required>
             </div>
             <div class="form-row">
               <div class="field">
@@ -273,15 +257,13 @@ def contact_section():
                 <input id="email" name="Email" type="email" required>
               </div>
               <div class="field">
-                <label for="phone">Phone no.</label>
-                <input id="phone" name="Phone" type="tel">
+                <label for="phone">Phone no. *</label>
+                <input id="phone" name="Phone" type="tel" required>
               </div>
             </div>
             <div class="field">
-              <label for="topic">What topic are you interested in? *</label>
-              <select id="topic" name="Topic" required>
-                {topic_opts}
-              </select>
+              <label for="message">Message *</label>
+              <textarea id="message" name="Message" rows="5" required></textarea>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Submit</button>
             <p class="form-status" role="status" aria-live="polite"></p>
