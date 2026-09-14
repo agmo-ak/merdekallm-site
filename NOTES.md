@@ -20,11 +20,16 @@ python3 build.py
    appearing in GA within ~48 hours of the new site going live at the real
    domain (it won't show real traffic while only tested on localhost/GitHub
    Pages default domain).
-2. **Formspree** — `build.py` still has `FORMSPREE_ENDPOINT =
-   "https://formspree.io/f/YOUR_FORM_ID"` as a placeholder — I can't create
-   this account for you. Create a free form at formspree.io (verify
-   merdeka@agmogroup.com as the receiving address), grab the form endpoint,
-   put it in `build.py`, and rebuild. It's TODO-tagged — search for `TODO`.
+2. ~~**Contact form**~~ — done, using FormSubmit.co (no account needed) —
+   `FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/merdeka@agmogroup.com"`
+   in `build.py`. **One thing left**: FormSubmit.co requires a one-time
+   confirmation — the *first* real submission to merdeka@agmogroup.com will
+   trigger an activation email from FormSubmit.co to that inbox; someone
+   with access needs to click "Confirm" in it once before submissions start
+   arriving normally. Until then, submissions made before confirmation are
+   silently dropped (visitors still see "Thanks — we'll be in touch
+   shortly", so it's worth doing a real test submission and confirming
+   right after the site goes live).
 
 ## What was preserved from the live Wix site
 

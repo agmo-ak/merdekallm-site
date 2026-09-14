@@ -10,12 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Contact form: progressive enhancement over Formspree's native POST.
+  // Contact form: progressive enhancement over FormSubmit.co's native POST.
   var form = document.querySelector('form[data-contact-form]');
   if (form) {
     form.addEventListener('submit', function (e) {
       var action = form.getAttribute('action') || '';
-      if (action.indexOf('YOUR_FORM_ID') !== -1) return; // not configured yet, let it no-op via native submit/validation
       e.preventDefault();
       var status = form.querySelector('.form-status');
       var submitBtn = form.querySelector('button[type="submit"]');

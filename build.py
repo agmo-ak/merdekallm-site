@@ -31,7 +31,7 @@ OG_IMAGE = f"{BASE_URL}/assets/images/og-image.png"
 # Filled in once the user creates the properties — see NOTES.md
 GA_MEASUREMENT_ID = "G-9WQLFXK292"  # Merdeka LLM GA4 property, created 2026-09-14
 GSC_VERIFICATION = "EIqgZD8FoC7lPeDgGpcOZhCk8h2clPwHxMeJdOYbpPA"  # preserves the existing verified GSC property
-FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID"  # TODO: replace with real Formspree form id
+FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/merdeka@agmogroup.com"
 
 NAV = [
     ("LLM Training as a Service", "/llm-training-as-a-service/"),
@@ -255,7 +255,10 @@ def contact_section():
           </div>
         </div>
         <div class="form-card">
-          <form data-contact-form action="{FORMSPREE_ENDPOINT}" method="POST">
+          <form data-contact-form action="{FORMSUBMIT_ENDPOINT}" method="POST">
+            <input type="hidden" name="_subject" value="New enquiry from merdekallm.com">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
             <div class="form-row">
               <div class="field">
                 <label for="fname">First name *</label>
