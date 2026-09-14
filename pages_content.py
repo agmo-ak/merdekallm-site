@@ -221,14 +221,16 @@ def build_sovereignty():
 # MERDEKA MODEL HUB
 # ---------------------------------------------------------------------------
 def build_model_hub():
-    def hub(num, title, applications, automations, benefit, links=True, soon=False):
+    def hub(num, title, applications, automations, benefit, demo_url=None, model_url=None, soon=False):
         pill = '<span class="pill">Coming soon</span>' if soon else ""
         link_html = ""
-        if links:
-            link_html = ('<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">'
-                         '<a class="btn btn-ghost" href="/#contact">Click Here</a>'
-                         '<a class="btn btn-ghost" href="https://huggingface.co" target="_blank" rel="noopener">Hugging Face Link</a>'
-                         '</div>')
+        if demo_url or model_url:
+            buttons = []
+            if demo_url:
+                buttons.append(f'<a class="btn btn-primary" href="{demo_url}" target="_blank" rel="noopener">Try the Demo</a>')
+            if model_url:
+                buttons.append(f'<a class="btn btn-ghost" href="{model_url}" target="_blank" rel="noopener">View Model Card on Hugging Face</a>')
+            link_html = f'<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">{"".join(buttons)}</div>'
         return f"""
       <div class="hub-card">
         <div class="hub-card-head">
@@ -256,26 +258,30 @@ def build_model_hub():
         "Contract review automation, legal research assistance, document summarization, and legal compliance checks.",
         "Merdeka LLM can automate tedious legal tasks such as document drafting, contract reviews, and legal research, ensuring compliance with Malaysian laws and regulations.",
         "Increased legal department productivity, reduced manual workload, and enhanced accuracy in legal operations.",
+        demo_url="https://huggingface.co/spaces/Merdeka-LLM/merdeka-llm-lawyer-demo-chat-app",
+        model_url="https://huggingface.co/Merdeka-LLM/merdeka-llm-lawyer-3b-128k-instruct",
     )
     body += hub(
         "02", "&#128101; Human Resources (HR)",
         "Automated resume screening, employee onboarding, compliance training, and performance evaluations.",
         "HR teams can leverage Merdeka LLM to automate key tasks such as resume filtering, employee evaluations, and regulatory compliance training, streamlining recruitment and management.",
         "Efficient hiring processes, improved employee engagement, and better overall HR operations with reduced human bias.",
+        demo_url="https://huggingface.co/spaces/Merdeka-LLM/merdeka-llm-hr-demo-chat-app",
+        model_url="https://huggingface.co/Merdeka-LLM/merdeka-llm-hr-3b-128k-instruct",
     )
     body += hub(
         "03", "&#127891; Education",
         "Personalized learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
         "Merdeka LLM can create personalized learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
         "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
-        links=False, soon=True,
+        soon=True,
     )
     body += hub(
         "04", "&#128176; Finance",
         "Tax advisory, tax planning, and automated customer service solutions.",
         "Leverage Merdeka LLM to streamline customer interactions, enhance security, and provide predictive financial insights, all while ensuring compliance with local regulations.",
         "Optimized operations, secure financial analysis, and enhanced customer experiences.",
-        links=False, soon=True,
+        soon=True,
     )
     body += '</div></section>'
     body += contact_section()
