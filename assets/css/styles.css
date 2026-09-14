@@ -183,7 +183,7 @@ section{padding:72px 0}
 
 /* Footer */
 .site-footer{border-top:1px solid var(--border);background:var(--bg-alt);padding:56px 0 28px}
-.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:32px;margin-bottom:40px}
 .footer-brand{max-width:320px}
 .footer-brand .brand{margin-bottom:12px}
 .footer-brand p{color:var(--text-muted);font-size:14.5px}

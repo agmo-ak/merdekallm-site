@@ -53,13 +53,11 @@ FOOTER_COLS = [
         ("Become a Contributor", "/contributor/"),
         ("Blog", "/blog/"),
     ]),
-    ("Legal", [
-        ("Privacy Policy", "/privacy-policy/"),
-        ("Terms & Conditions", "/terms-and-conditions/"),
-        ("Refund Policy", "/refund-policy/"),
-        ("Accessibility Statement", "/accessibility-statement/"),
-    ]),
 ]
+
+COMPANY_NAME = "Agmo Tech Sdn Bhd"
+COMPANY_ROC = "202001027870"
+COMPANY_ROC_OLD = "1384190-D"
 
 ADDRESS_LINES = [
     "Agmo Group",
@@ -221,7 +219,7 @@ def footer_html():
         {"".join(cols)}
       </div>
       <div class="footer-bottom">
-        <span>&copy; {year} AGMO MERDEKA LLM. All rights reserved.</span>
+        <span>&copy; {year} AGMO MERDEKA LLM. All rights reserved. {COMPANY_NAME} (Company No. {COMPANY_ROC}, formerly {COMPANY_ROC_OLD}).</span>
         <span>{ADDRESS_LINES[1]} {ADDRESS_LINES[2]} {ADDRESS_LINES[3]} {ADDRESS_LINES[4]}</span>
       </div>
     </div>
