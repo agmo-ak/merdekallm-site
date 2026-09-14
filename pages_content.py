@@ -2,9 +2,10 @@
 import os
 import re
 import glob
+import html
 from build import (
     ROOT, page_shell, write_page, contact_section, markdown_to_html,
-    parse_frontmatter, DEFAULT_DESCRIPTION, EMAIL, PHONE, BASE_URL, SITE_NAME,
+    parse_frontmatter, DEFAULT_DESCRIPTION, EMAIL, PHONE, BASE_URL, SITE_NAME, OG_IMAGE,
 )
 
 ICONS = {
@@ -634,6 +635,7 @@ def build_404():
         path="/404.html",
         body=body,
         active_nav=None,
+        noindex=True,
     )
     out = os.path.join(ROOT, "404.html")
     with open(out, "w", encoding="utf-8") as f:
@@ -711,27 +713,52 @@ def build_blog(posts):
 
 
 def build_post(p):
+    post_url = f"/post/{p['slug']}/"
     body = f"""
   <section>
     <div class="container post-article">
       <a class="back-link" href="/blog/">&larr; All Posts</a>
-      <h1>{p['title']}</h1>
-      <div class="post-meta">{p['author']} &middot; {pretty_date(p['date'])} &middot; {p['readtime']}</div>
-      <div class="post-body">
-        {p['body_html']}
-      </div>
+      <article>
+        <h1>{p['title']}</h1>
+        <div class="post-meta">
+          <span itemscope itemtype="https://schema.org/Person">{p['author']}</span>
+          &middot; <time datetime="{p['date']}">{pretty_date(p['date'])}</time>
+          &middot; {p['readtime']}
+        </div>
+        <div class="post-body">
+          {p['body_html']}
+        </div>
+      </article>
       <p style="margin-top:48px"><a class="back-link" href="/blog/">&larr; Back to all posts</a></p>
     </div>
   </section>
 """
+    blog_posting = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": f"{BASE_URL}{post_url}#article",
+        "headline": p["title"],
+        "description": p["excerpt"] or DEFAULT_DESCRIPTION,
+        "datePublished": p["date"],
+        "dateModified": p["date"],
+        "author": {"@type": "Person", "name": p["author"]},
+        "publisher": {"@id": f"{BASE_URL}/#organization"},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": f"{BASE_URL}{post_url}"},
+        "image": OG_IMAGE,
+        "url": f"{BASE_URL}{post_url}",
+        "inLanguage": "en",
+    }
     html_str = page_shell(
         title=p["title"],
         description=p["excerpt"] or DEFAULT_DESCRIPTION,
-        path=f"/post/{p['slug']}/",
+        path=post_url,
         body=body,
         active_nav="/blog/",
+        page_type="article",
+        breadcrumbs=[("Home", "/"), ("Blog", "/blog/"), (p["title"], post_url)],
+        extra_jsonld=[blog_posting],
     )
-    write_page(f"/post/{p['slug']}/", html_str)
+    write_page(post_url, html_str)
 
 
 STATIC_PATHS = [
@@ -746,11 +773,25 @@ def build_sitemap(posts):
     import datetime as dt
     today = dt.date.today().isoformat()
     urls = list(STATIC_PATHS) + [f"/post/{p['slug']}/" for p in posts]
-    entries = "\n".join(
-        f"  <url>\n    <loc>{BASE_URL}{u}</loc>\n    <lastmod>{today}</lastmod>\n  </url>"
-        for u in urls
+    # Real content images (favicon/decorative shapes excluded) — image sitemap
+    # entries help these get (re-)indexed under the new domain for image search.
+    page_images = {
+        "/": [(f"{BASE_URL}/assets/images/hero-rocket.gif", "Merdeka LLM — rocket illustration representing Malaysia's AI growth")],
+    }
+    entries = []
+    for u in urls:
+        imgs = page_images.get(u, [])
+        img_tags = "".join(
+            f"\n    <image:image><image:loc>{src}</image:loc><image:title>{html.escape(title, quote=True)}</image:title></image:image>"
+            for src, title in imgs
+        )
+        entries.append(f"  <url>\n    <loc>{BASE_URL}{u}</loc>\n    <lastmod>{today}</lastmod>{img_tags}\n  </url>")
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+        'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
+        + "\n".join(entries) + "\n</urlset>\n"
     )
-    xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>\n'
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(xml)
     print("wrote sitemap.xml")

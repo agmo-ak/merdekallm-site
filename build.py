@@ -9,6 +9,7 @@ import os
 import re
 import glob
 import html
+import json
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -68,6 +69,69 @@ ADDRESS_LINES = [
 ]
 EMAIL = "merdeka@agmogroup.com"
 PHONE = "+603-7664 8515"
+
+# ---------------------------------------------------------------------------
+# Structured data (JSON-LD) — helps traditional search, AI answer engines
+# (AEO), and generative engines (GEO) correctly parse who/what this site is.
+# ---------------------------------------------------------------------------
+def organization_jsonld():
+    return {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": f"{BASE_URL}/#organization",
+        "name": f"{SITE_NAME} {SITE_TAGLINE}",
+        "alternateName": "Merdeka LLM",
+        "url": BASE_URL,
+        "logo": OG_IMAGE,
+        "description": DEFAULT_DESCRIPTION,
+        "email": EMAIL,
+        "telephone": PHONE,
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Level 38, MYEG Tower, Empire City Damansara, Jalan PJU 8, Damansara Perdana",
+            "addressLocality": "Petaling Jaya",
+            "addressRegion": "Selangor",
+            "postalCode": "47820",
+            "addressCountry": "MY",
+        },
+        "parentOrganization": {
+            "@type": "Organization",
+            "name": "Agmo Tech Sdn Bhd",
+        },
+    }
+
+
+def website_jsonld():
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": f"{BASE_URL}/#website",
+        "name": SITE_NAME,
+        "url": BASE_URL,
+        "publisher": {"@id": f"{BASE_URL}/#organization"},
+        "inLanguage": "en",
+    }
+
+
+def breadcrumbs_jsonld(crumbs):
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": i + 1,
+                "name": label,
+                "item": f"{BASE_URL}{href}",
+            }
+            for i, (label, href) in enumerate(crumbs)
+        ],
+    }
+
+
+def jsonld_script(data):
+    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>'
+
 
 # ---------------------------------------------------------------------------
 # Tiny markdown -> HTML (only the subset our blog posts actually use)
@@ -275,10 +339,24 @@ def contact_section():
   </section>"""
 
 
-def page_shell(*, title, description, path, body, active_nav=None, og_image=None, extra_head=""):
+def page_shell(*, title, description, path, body, active_nav=None, og_image=None, extra_head="",
+                breadcrumbs=None, extra_jsonld=None, noindex=False, page_type="website"):
     canonical = f"{BASE_URL}{path}"
     og_image = og_image or OG_IMAGE
     full_title = title if title == SITE_NAME else f"{title} | {SITE_NAME} {SITE_TAGLINE}"
+
+    if breadcrumbs is None:
+        breadcrumbs = [] if path == "/" else [("Home", "/"), (title, path)]
+
+    jsonld_blocks = [organization_jsonld(), website_jsonld()]
+    if breadcrumbs:
+        jsonld_blocks.append(breadcrumbs_jsonld(breadcrumbs))
+    if extra_jsonld:
+        jsonld_blocks.extend(extra_jsonld)
+    jsonld_html = "\n".join(jsonld_script(d) for d in jsonld_blocks)
+
+    robots_meta = '<meta name="robots" content="noindex, nofollow">' if noindex else ""
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -287,12 +365,13 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 <title>{full_title}</title>
 <meta name="description" content="{html.escape(description, quote=True)}">
 <link rel="canonical" href="{canonical}">
+{robots_meta}
 <meta name="google-site-verification" content="{GSC_VERIFICATION}">
 <meta property="og:title" content="{html.escape(full_title, quote=True)}">
 <meta property="og:description" content="{html.escape(description, quote=True)}">
 <meta property="og:image" content="{og_image}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="{page_type}">
 <meta property="og:site_name" content="{SITE_NAME} {SITE_TAGLINE}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{html.escape(full_title, quote=True)}">
@@ -301,6 +380,7 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/images/favicon.svg">
 <link rel="stylesheet" href="/assets/css/styles.css">
+{jsonld_html}
 {extra_head}{ga_snippet()}
 </head>
 <body>
