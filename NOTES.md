@@ -13,16 +13,18 @@ python3 build.py
 
 ## Still needs your input before this is fully live
 
-1. **Google Analytics** — `build.py` has `GA_MEASUREMENT_ID = "G-XXXXXXXXXX"`
-   as a placeholder. No GA4 property exists yet for merdekallm.com under
-   ak@agmostudio.com — create one (analytics.google.com → Admin → Create
-   Property), grab the `G-XXXXXXXXXX` measurement ID from its Web data
-   stream, put it in `build.py`, and rebuild.
-2. **Formspree** — `build.py` has `FORMSPREE_ENDPOINT =
-   "https://formspree.io/f/YOUR_FORM_ID"` as a placeholder. Create a free
-   form at formspree.io (verify merdeka@agmogroup.com as the receiving
-   address), grab the form endpoint, put it in `build.py`, and rebuild.
-3. Both are TODO-tagged in `build.py` — search for `TODO`.
+1. ~~**Google Analytics**~~ — done. Created GA4 property "Merdeka LLM"
+   (measurement ID `G-9WQLFXK292`) under the same ak@agmostudio.com account
+   that already runs Agmo Group's GA, with its own data stream for
+   merdekallm.com. It's wired into every page in `build.py`. Data will start
+   appearing in GA within ~48 hours of the new site going live at the real
+   domain (it won't show real traffic while only tested on localhost/GitHub
+   Pages default domain).
+2. **Formspree** — `build.py` still has `FORMSPREE_ENDPOINT =
+   "https://formspree.io/f/YOUR_FORM_ID"` as a placeholder — I can't create
+   this account for you. Create a free form at formspree.io (verify
+   merdeka@agmogroup.com as the receiving address), grab the form endpoint,
+   put it in `build.py`, and rebuild. It's TODO-tagged — search for `TODO`.
 
 ## What was preserved from the live Wix site
 

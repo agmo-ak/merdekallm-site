@@ -29,7 +29,7 @@ DEFAULT_DESCRIPTION = (
 OG_IMAGE = f"{BASE_URL}/assets/images/og-image.png"
 
 # Filled in once the user creates the properties — see NOTES.md
-GA_MEASUREMENT_ID = "G-XXXXXXXXXX"  # TODO: replace once GA4 property is created
+GA_MEASUREMENT_ID = "G-9WQLFXK292"  # Merdeka LLM GA4 property, created 2026-09-14
 GSC_VERIFICATION = "EIqgZD8FoC7lPeDgGpcOZhCk8h2clPwHxMeJdOYbpPA"  # preserves the existing verified GSC property
 FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID"  # TODO: replace with real Formspree form id
 
