@@ -30,6 +30,15 @@ python3 build.py
    silently dropped (visitors still see "Thanks — we'll be in touch
    shortly", so it's worth doing a real test submission and confirming
    right after the site goes live).
+   - **Anti-spam**: added a honeypot field (`_honey`, hidden off-screen via
+     `.hp-field` in styles.css) — FormSubmit auto-discards any submission
+     where it's filled in, which naive spam bots that blindly fill every
+     `<input>` will trip. Also removed the `_captcha value="false"` override
+     we'd set earlier, since that was explicitly telling FormSubmit to skip
+     its own spam filtering. If spam through the honeypot keeps showing up,
+     the next lever is FormSubmit's `_captcha` challenge — but that may
+     require switching off the AJAX endpoint (redirects to a challenge page
+     instead of a silent fetch), so it's a bigger UX tradeoff.
 
 ## What was preserved from the live Wix site
 

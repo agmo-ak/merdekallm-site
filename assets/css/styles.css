@@ -181,6 +181,8 @@ section{padding:72px 0}
 .field textarea{resize:vertical;min-height:100px}
 .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--brand);outline-offset:1px}
 .form-note{font-size:12.5px;color:var(--text-faint);margin-top:10px}
+/* Honeypot: off-screen (not display:none) so unsophisticated spam bots still fill it in */
+.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* Footer */
 .site-footer{border-top:1px solid var(--border);background:var(--bg-alt);padding:56px 0 28px}

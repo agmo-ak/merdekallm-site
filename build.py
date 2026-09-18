@@ -310,7 +310,10 @@ def contact_section():
           <form data-contact-form action="{FORMSUBMIT_ENDPOINT}" method="POST">
             <input type="hidden" name="_subject" value="New enquiry from merdekallm.com">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
+            <div class="hp-field" aria-hidden="true">
+              <label for="hp">Leave this field blank</label>
+              <input id="hp" type="text" name="_honey" tabindex="-1" autocomplete="off">
+            </div>
             <div class="field">
               <label for="name">Name *</label>
               <input id="name" name="Name" type="text" required>
