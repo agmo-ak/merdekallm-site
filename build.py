@@ -17,11 +17,13 @@ import base64
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-# Generated site output lives in docs/ — this is the only directory GitHub
-# Pages is configured to publish, so build tooling/source markdown at ROOT
-# (build.py, pages_content.py, content-source/, NOTES.md) never goes live.
-PUBLISH_DIR = os.path.join(ROOT, "docs")
-os.makedirs(PUBLISH_DIR, exist_ok=True)
+# Generated site output is published straight from the repo root (this is
+# what GitHub Pages is configured to serve). We tried moving it to docs/ so
+# build.py/pages_content.py/content-source/ wouldn't be publicly
+# downloadable, but changing the Pages source path broke the live site
+# (see git history ~2026-09-19) and was reverted. PUBLISH_DIR == ROOT for
+# now; revisit the docs/ split later with more care if this needs fixing.
+PUBLISH_DIR = ROOT
 
 # ---------------------------------------------------------------------------
 # Site-wide config
