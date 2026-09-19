@@ -4,7 +4,7 @@
     {
       "name": "merdekallm-static",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8420"],
+      "runtimeArgs": ["-m", "http.server", "8420", "--directory", "docs"],
       "port": 8420
     }
   ]

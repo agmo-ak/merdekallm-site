@@ -4,7 +4,7 @@ import re
 import glob
 import html
 from build import (
-    ROOT, page_shell, write_page, contact_section, markdown_to_html,
+    ROOT, PUBLISH_DIR, page_shell, write_page, contact_section, markdown_to_html,
     parse_frontmatter, DEFAULT_DESCRIPTION, EMAIL, PHONE, BASE_URL, SITE_NAME, OG_IMAGE,
 )
 
@@ -230,12 +230,12 @@ def build_model_hub():
                 buttons.append(f'<a class="btn btn-primary" href="{demo_url}" target="_blank" rel="noopener">Try the Demo</a>')
             if model_url:
                 buttons.append(f'<a class="btn btn-ghost" href="{model_url}" target="_blank" rel="noopener">View Model Card on Hugging Face</a>')
-            link_html = f'<div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">{"".join(buttons)}</div>'
+            link_html = f'<div class="hub-actions">{"".join(buttons)}</div>'
         return f"""
       <div class="hub-card">
         <div class="hub-card-head">
           <div class="hub-num">{num}</div>
-          <h3 style="margin:0">{title}</h3>
+          <h3>{title}</h3>
           {pill}
         </div>
         <div class="hub-grid">
@@ -397,7 +397,7 @@ def build_gig_economy():
         <div class="card"><h3>Income Opportunities</h3><p>Earn money by contributing to Malaysia&rsquo;s AI future.</p></div>
         <div class="card"><h3>National Contribution</h3><p>Be part of the team that ensures Malaysia&rsquo;s AI is built for local needs and contexts.</p></div>
       </div>
-      <div style="display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap">
+      <div class="cta-row">
         <a class="btn btn-primary" href="/contributor/">Join as Contributor</a>
         <a class="btn btn-ghost" href="/curator/">Join as Curator</a>
       </div>
@@ -630,7 +630,7 @@ def build_404():
   <div class="error-page">
     <div class="code">404</div>
     <h1>This page isn&rsquo;t available</h1>
-    <p style="color:var(--text-muted);max-width:44ch">The page you&rsquo;re looking for may have moved. Try the
+    <p>The page you&rsquo;re looking for may have moved. Try the
     homepage, or explore Merdeka LLM below.</p>
     <a class="btn btn-primary" href="/">Go to Homepage</a>
   </div>
@@ -643,7 +643,7 @@ def build_404():
         active_nav=None,
         noindex=True,
     )
-    out = os.path.join(ROOT, "404.html")
+    out = os.path.join(PUBLISH_DIR, "404.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html_str)
     print("wrote 404.html")
@@ -735,7 +735,7 @@ def build_post(p):
           {p['body_html']}
         </div>
       </article>
-      <p style="margin-top:48px"><a class="back-link" href="/blog/">&larr; Back to all posts</a></p>
+      <p class="mt-lg"><a class="back-link" href="/blog/">&larr; Back to all posts</a></p>
     </div>
   </section>
 """
@@ -798,7 +798,7 @@ def build_sitemap(posts):
         'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
         + "\n".join(entries) + "\n</urlset>\n"
     )
-    with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
+    with open(os.path.join(PUBLISH_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(xml)
     print("wrote sitemap.xml")
 
@@ -839,7 +839,7 @@ def build_llms_txt(posts):
         f"- [Accessibility Statement]({BASE_URL}/accessibility-statement/)",
         "",
     ]
-    with open(os.path.join(ROOT, "llms.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join(PUBLISH_DIR, "llms.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
     print("wrote llms.txt")
 

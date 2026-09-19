@@ -2,17 +2,26 @@
 """
 Static site generator for merdekallm.com.
 Reads content-source/*.md for blog posts, writes plain static HTML
-(one folder-per-slug with index.html) into the repo root, ready for
-GitHub Pages. No runtime dependency — this script only runs locally.
+(one folder-per-slug with index.html) into docs/ — the only directory
+GitHub Pages is configured to publish, so this script and its markdown
+sources never go live. No runtime dependency — this script only runs
+locally.
 """
 import os
 import re
 import glob
 import html
 import json
+import hashlib
+import base64
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+# Generated site output lives in docs/ — this is the only directory GitHub
+# Pages is configured to publish, so build tooling/source markdown at ROOT
+# (build.py, pages_content.py, content-source/, NOTES.md) never goes live.
+PUBLISH_DIR = os.path.join(ROOT, "docs")
+os.makedirs(PUBLISH_DIR, exist_ok=True)
 
 # ---------------------------------------------------------------------------
 # Site-wide config
@@ -221,15 +230,46 @@ def parse_frontmatter(md_text):
 # ---------------------------------------------------------------------------
 # HTML shell
 # ---------------------------------------------------------------------------
-def ga_snippet():
-    return f"""
-    <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
-    <script>
+GA_INLINE_SCRIPT = f"""
       window.dataLayer = window.dataLayer || [];
       function gtag(){{dataLayer.push(arguments);}}
       gtag('js', new Date());
       gtag('config', '{GA_MEASUREMENT_ID}');
-    </script>"""
+    """
+
+
+def script_hash(script_body):
+    digest = hashlib.sha256(script_body.encode("utf-8")).digest()
+    return "'sha256-" + base64.b64encode(digest).decode("ascii") + "'"
+
+
+def ga_snippet():
+    return f"""
+    <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+    <script>{GA_INLINE_SCRIPT}</script>"""
+
+
+# Content-Security-Policy meta tag. Note: CSP delivered via <meta> ignores
+# frame-ancestors/sandbox/report-* — those need a real HTTP header, which
+# GitHub Pages custom domains don't support without a reverse proxy in
+# front (e.g. Cloudflare). This still meaningfully restricts script/style/
+# connect/form-action sources. The inline gtag bootstrap script is allowed
+# via its exact hash rather than a blanket 'unsafe-inline'.
+CSP_META = (
+    "<meta http-equiv=\"Content-Security-Policy\" content=\""
+    "default-src 'self'; "
+    f"script-src 'self' https://www.googletagmanager.com {script_hash(GA_INLINE_SCRIPT)}; "
+    "style-src 'self'; "
+    "img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; "
+    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com "
+    "https://*.google-analytics.com https://*.analytics.google.com https://formsubmit.co; "
+    "font-src 'self'; "
+    "form-action 'self' https://formsubmit.co; "
+    "base-uri 'self'; "
+    "object-src 'none'"
+    "\">"
+)
+REFERRER_META = '<meta name="referrer" content="strict-origin-when-cross-origin">'
 
 
 def nav_html(active_path):
@@ -241,7 +281,7 @@ def nav_html(active_path):
 
 
 def mobile_nav_html(active_path):
-    items = ['<a href="/#contact" style="color:var(--brand)">Join the AI Revolution &rarr;</a>']
+    items = ['<a href="/#contact" class="link-brand">Join the AI Revolution &rarr;</a>']
     items += [f'<a href="{href}">{label}</a>' for label, href in NAV]
     items.append('<a href="/curator/">Become a Curator</a>')
     items.append('<a href="/contributor/">Become a Contributor</a>')
@@ -364,6 +404,8 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+{CSP_META}
+{REFERRER_META}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{full_title}</title>
 <meta name="description" content="{html.escape(description, quote=True)}">
@@ -417,14 +459,14 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 
 def write_page(rel_path, html_str):
     if rel_path == "/":
-        out = os.path.join(ROOT, "index.html")
+        out = os.path.join(PUBLISH_DIR, "index.html")
     else:
-        out_dir = os.path.join(ROOT, rel_path.strip("/"))
+        out_dir = os.path.join(PUBLISH_DIR, rel_path.strip("/"))
         os.makedirs(out_dir, exist_ok=True)
         out = os.path.join(out_dir, "index.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html_str)
-    print("wrote", os.path.relpath(out, ROOT))
+    print("wrote", os.path.relpath(out, PUBLISH_DIR))
 
 
 # ---------------------------------------------------------------------------
