@@ -696,7 +696,17 @@ def build_model_hub():
     )
     body += '<section><div class="container">'
     body += hub(
-        "01", "&#9878;&#65039; Legal",
+        "01", "&#127891; Education: MerdekaLLM-Sasbadi-27b",
+        "Personalised learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
+        "Merdeka LLM can create personalised learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
+        "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
+        anchor="education",
+        partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>.",
+        benchmark=malaymmlu_benchmark(),
+        actions='<a class="btn btn-primary" href="/#contact">Ask about this model</a>',
+    )
+    body += hub(
+        "02", "&#9878;&#65039; Legal",
         "Contract review automation, legal research assistance, document summarisation, and legal compliance checks.",
         "Merdeka LLM can automate tedious legal tasks such as document drafting, contract reviews, and legal research, ensuring compliance with Malaysian laws and regulations.",
         "Increased legal department productivity, reduced manual workload, and enhanced accuracy in legal operations.",
@@ -707,7 +717,7 @@ def build_model_hub():
         actions=DATA_PARTNER_BTN,
     )
     body += hub(
-        "02", "&#128101; Human Resources (HR)",
+        "03", "&#128101; Human Resources (HR)",
         "Automated resume screening, employee onboarding, compliance training, and performance evaluations.",
         "HR teams can leverage Merdeka LLM to automate key tasks such as resume filtering, employee evaluations, and regulatory compliance training, streamlining recruitment and management.",
         "Efficient hiring processes, improved employee engagement, and better overall HR operations with reduced human bias.",
@@ -716,16 +726,6 @@ def build_model_hub():
         callout=data_partner_callout(
             "HR", "HR consultancies, payroll and HRMS providers, and training bodies with quality Malaysian HR content"),
         actions=DATA_PARTNER_BTN,
-    )
-    body += hub(
-        "03", "&#127891; Education: MerdekaLLM-Sasbadi-27b",
-        "Personalised learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
-        "Merdeka LLM can create personalised learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
-        "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
-        anchor="education",
-        partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>.",
-        benchmark=malaymmlu_benchmark(),
-        actions='<a class="btn btn-primary" href="/#contact">Ask about this model</a>',
     )
     body += hub(
         "04", "&#128176; Finance",
