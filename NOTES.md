@@ -24,7 +24,7 @@ python3 build.py    # regenerates all pages, sitemap.xml and llms.txt in place
 ## Still needs your input before this is fully live
 
 1. ~~**Google Analytics**~~ — done. Created GA4 property "Merdeka LLM"
-   (measurement ID `G-9WQLFXK292`) under the same ak@agmostudio.com account
+   (measurement ID `G-9WQLFXK292`) under the same Google account
    that already runs Agmo Group's GA, with its own data stream for
    merdekallm.com. It's wired into every page in `build.py`. Data will start
    appearing in GA within ~48 hours of the new site going live at the real
