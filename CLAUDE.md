@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Static marketing site for merdekallm.com (Merdeka LLM by Agmo Group), served by GitHub Pages from the **repo root** of `main` (custom domain via `CNAME`, `.nojekyll` present). A small dependency-free Python generator produces every HTML page; the generated output is committed alongside the generator.
+Static marketing site for merdekallm.com (Merdeka LLM by Agmo Group), served by GitHub Pages. A small dependency-free Python generator produces every HTML page; the generated output is committed at the repo root alongside the generator. `.github/workflows/pages.yml` deploys on every push to `main`, publishing only the generated files (it does not run `build.py`, so rebuild before committing).
 
 ## Commands
 
@@ -31,6 +31,6 @@ URL slugs deliberately match the old Wix site for SEO continuity. Do not rename 
 - **CSP is strict** (`CSP_META` in `build.py`): no inline `style="..."` attributes and no inline scripts. The only inline script is the GA bootstrap, allowed by a SHA-256 hash computed from `GA_INLINE_SCRIPT` at build time. Any new external host (scripts, fetch, forms, images) must be added to the CSP or it will be blocked.
 - **Markdown converter supports only** `#` headings, paragraphs, `-`/`*` and numbered lists, `**bold**` and `*italic*`. No links, images, code or tables; extend `markdown_to_html()` if a post needs them.
 - **Contact form** posts to FormSubmit.co (`FORMSUBMIT_ENDPOINT`). The `_honey` hidden field is a spam honeypot; keep it.
-- **Publishing location**: an attempt to publish only a `docs/` folder broke the live site and was reverted (see git history and the comment at `PUBLISH_DIR` in `build.py`). `PUBLISH_DIR == ROOT`. Changing the Pages source path is risky and needs coordination.
+- **What gets published** is decided by the "Collect site files" step in `pages.yml`: the listed root files, `assets/`, `post/`, and every top-level folder containing an `index.html`. A new root-level site file (e.g. a verification file) must be added there; a new folder of notes or source must never contain an `index.html`. The repo itself is public, so excluding files from the site does not make them private.
 - **Sitemap `lastmod`** comes from git (`last_modified()` in `pages_content.py`): today for a source file with uncommitted edits, otherwise its last commit date. All static pages share `pages_content.py`'s date.
 - `NOTES.md` holds deployment history and open items (FormSubmit activation, security headers needing a proxy, CAA record).

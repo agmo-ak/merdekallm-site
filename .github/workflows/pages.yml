@@ -1,0 +1,49 @@
+# Deploys only the generated site to GitHub Pages. The generator (build.py,
+# pages_content.py, content-source/) and repo notes stay out of the published
+# site. Requires Settings > Pages > Source = "GitHub Actions".
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Collect site files
+        run: |
+          mkdir _site
+          cp index.html 404.html CNAME robots.txt sitemap.xml llms.txt _site/
+          cp -R assets post _site/
+          # Every other top-level folder with an index.html is a generated page.
+          for d in */; do
+            d=${d%/}
+            [ "$d" = _site ] && continue
+            if [ -f "$d/index.html" ] && [ ! -e "_site/$d" ]; then cp -R "$d" _site/; fi
+          done
+          for f in build.py pages_content.py content-source NOTES.md CLAUDE.md tasks .claude; do
+            if [ -e "_site/$f" ]; then echo "::error::$f must not be published"; exit 1; fi
+          done
+
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v5

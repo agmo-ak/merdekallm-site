@@ -2,8 +2,8 @@
 """
 Static site generator for merdekallm.com.
 Reads content-source/*.md for blog posts, writes plain static HTML
-(one folder-per-slug with index.html) into docs/ — the only directory
-GitHub Pages is configured to publish, so this script and its markdown
+(one folder-per-slug with index.html) at the repo root; the Pages
+workflow publishes only those files, so this script and its markdown
 sources never go live. No runtime dependency — this script only runs
 locally.
 """
@@ -17,12 +17,10 @@ import base64
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-# Generated site output is published straight from the repo root (this is
-# what GitHub Pages is configured to serve). We tried moving it to docs/ so
-# build.py/pages_content.py/content-source/ wouldn't be publicly
-# downloadable, but changing the Pages source path broke the live site
-# (see git history ~2026-09-19) and was reverted. PUBLISH_DIR == ROOT for
-# now; revisit the docs/ split later with more care if this needs fixing.
+# Generated output is written to the repo root and committed. The Pages
+# workflow (.github/workflows/pages.yml) publishes only the site files from
+# here, so this script and its sources are not served. (A docs/ output dir
+# was tried ~2026-09-19 and broke the live site; see git history.)
 PUBLISH_DIR = ROOT
 
 # ---------------------------------------------------------------------------

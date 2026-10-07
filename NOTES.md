@@ -5,12 +5,15 @@ Static site generator: `build.py` + `pages_content.py` render everything in
 plain static HTML under folder-per-slug (`why-sovereignty-matters/index.html`
 etc.), matching the URL structure of the old Wix site.
 
-**Repo layout**: GitHub Pages publishes the repo root of the `main` branch,
-so the generated HTML sits alongside the generator. This means `build.py`,
-`pages_content.py` and `content-source/` are publicly downloadable from
-merdekallm.com. Moving the output to `docs/` was tried (2026-09-19) but
-changing the Pages source path broke the live site, so it was reverted.
-Revisit with care if hiding the source matters.
+**Repo layout**: the generated HTML is committed at the repo root alongside
+the generator. `.github/workflows/pages.yml` deploys it on every push to
+`main`, copying only the site files into the Pages artifact, so `build.py`,
+`pages_content.py`, `content-source/` and the notes files are not served
+from merdekallm.com (Settings → Pages → Source = "GitHub Actions"). The
+repo itself is public, so they are still readable on GitHub. History:
+until 2026-10 Pages published the whole repo root, which served the source
+files too; an earlier attempt to fix that by publishing `docs/` (2026-09-19)
+broke the live site and was reverted.
 
 To rebuild after editing content or templates:
 
