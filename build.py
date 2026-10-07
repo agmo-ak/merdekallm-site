@@ -41,6 +41,7 @@ OG_IMAGE = f"{BASE_URL}/assets/images/og-image.png"
 # Filled in once the user creates the properties — see NOTES.md
 GA_MEASUREMENT_ID = "G-9WQLFXK292"  # Merdeka LLM GA4 property, created 2026-09-14
 GSC_VERIFICATION = "EIqgZD8FoC7lPeDgGpcOZhCk8h2clPwHxMeJdOYbpPA"  # preserves the existing verified GSC property
+BING_VERIFICATION = "EA19F6F36BFC1851D14829CC79B727C7"  # Bing Webmaster Tools (msvalidate.01); must stay on the page to remain verified
 FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/merdeka@agmogroup.com"
 
 NAV = [
@@ -412,6 +413,7 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 <link rel="canonical" href="{canonical}">
 {robots_meta}
 <meta name="google-site-verification" content="{GSC_VERIFICATION}">
+<meta name="msvalidate.01" content="{BING_VERIFICATION}">
 <meta property="og:title" content="{html.escape(full_title, quote=True)}">
 <meta property="og:description" content="{html.escape(description, quote=True)}">
 <meta property="og:image" content="{og_image}">
