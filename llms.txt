@@ -6,7 +6,7 @@ Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a 
 
 ## Pages
 
-- [Merdeka LLM](https://merdekallm.com/): Malaysia's AI for a Sovereign and Empowered Future
+- [Merdeka LLM](https://merdekallm.com/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: MerdekaLLM-Sasbadi-27b has 27B parameters, scores 84.9% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU
 - [Why Sovereignty Matters](https://merdekallm.com/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure
 - [Merdeka Model Hub](https://merdekallm.com/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; 84.9% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about 28x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance
 - [LLM Training as a Service](https://merdekallm.com/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS

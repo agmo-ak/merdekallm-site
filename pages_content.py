@@ -19,7 +19,8 @@ ICONS = {
 }
 
 
-def hero(eyebrow, title, lede, actions="", art=""):
+def hero(eyebrow, title, lede, actions="", art="", badges=""):
+    badges = f'\n        <div class="hero-badges">{badges}</div>' if badges else ""
     return f"""
   <section class="hero">
     <div class="container hero-grid">
@@ -27,7 +28,7 @@ def hero(eyebrow, title, lede, actions="", art=""):
         <span class="eyebrow">{eyebrow}</span>
         <h1>{title}</h1>
         <p class="lede">{lede}</p>
-        <div class="hero-actions">{actions}</div>
+        <div class="hero-actions">{actions}</div>{badges}
       </div>
       <div class="hero-art">{art}</div>
     </div>
@@ -97,6 +98,8 @@ def data_partner_callout(domain, who):
 
 
 MALAYSIAN_ORGS = {"YTL AI Labs"}
+# Leaderboard leaders shown in the comparison table as the frontier reference.
+FRONTIER_SHOWN = 3
 
 
 # Total parameters (billions) from each developer's own model card or repo.
@@ -331,11 +334,18 @@ def local_hosting_section():
 def malaymmlu_comparison():
     ours = (MALAYMMLU["model"], "Agmo Group &times; Sasbadi", MALAYMMLU["overall"],
             *(round(float(score)) for _, score in MALAYMMLU["categories"]))
-    # Show every model that beats ours (never hide a higher score) and every
-    # Malaysian model (backs the #1 claim); link out for the rest.
+    # Show the top frontier models as the reference and every Malaysian model
+    # (backs the #1 claim). Other models that beat ours are named under the
+    # table, never silently dropped; link out for the rest.
     ours_score = float(MALAYMMLU["overall"])
-    shown = [r for r in PENDAKWAH_LEADERBOARD if float(r[2]) > ours_score or r[1] in MALAYSIAN_ORGS]
-    hidden = [r for r in PENDAKWAH_LEADERBOARD if r not in shown]
+    top = PENDAKWAH_LEADERBOARD[:FRONTIER_SHOWN]
+    shown = top + [r for r in PENDAKWAH_LEADERBOARD if r[1] in MALAYSIAN_ORGS and r not in top]
+    hidden_above = [r for r in PENDAKWAH_LEADERBOARD if r not in shown and float(r[2]) > ours_score]
+    hidden = [r for r in PENDAKWAH_LEADERBOARD if r not in shown and r not in hidden_above]
+    above_note = ""
+    if hidden_above:
+        names = ", ".join(f"{r[0]} ({r[2]})" for r in hidden_above)
+        above_note = (f"{len(hidden_above)} more models also score above {MALAYMMLU['model']}: {names}. ")
     rows = sorted(shown + [ours], key=lambda r: float(r[2]), reverse=True)
     runner_up = malaysian_runner_up()
     body = ""
@@ -362,7 +372,7 @@ def malaymmlu_comparison():
         <p>Accuracy (%) on MalayMMLU, the Malay-language knowledge benchmark. At {MALAYMMLU['overall']}%,
         {MALAYMMLU['model']} scores highest of the Malaysian-built models ({MY_TAG}) in this comparison, ahead of
         {runner_up[0]} ({runner_up[2]}) with about {size_facts()['ratio']}&times; fewer parameters, and sits among
-        frontier models from Google, OpenAI, Anthropic and Alibaba.</p>
+        frontier models from Google, OpenAI and Anthropic.</p>
       </div>
       <div class="cmp-wrap">
         <table class="cmp-table">
@@ -373,8 +383,8 @@ def malaymmlu_comparison():
           <tbody>{body}</tbody>
         </table>
       </div>
-      <p class="cmp-more">Showing every model that scores above {MALAYMMLU['model']} and every Malaysian model.
-      {len(hidden)} more models, all scoring {max(float(r[2]) for r in hidden)} or lower, are on the
+      <p class="cmp-more">Showing the top {FRONTIER_SHOWN} models on the leaderboard and every Malaysian model.
+      {above_note}{len(hidden)} more models, all scoring {max(float(r[2]) for r in hidden)} or lower, are on the
       <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">full leaderboard</a> and in the size chart above.</p>
       <p class="cmp-credit">&dagger; Size of its GLM-5.1 base model; YTL does not publish a parameter count.
       Comparison data from the
@@ -419,19 +429,67 @@ def malaymmlu_benchmark():
         </div>"""
 
 
+def small_powerful_section():
+    """Homepage section: the size story, with the hub page's size chart."""
+    s, f = MODEL_SIZE, size_facts()
+    runner_up = malaysian_runner_up()
+    assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
+    tiles = [
+        (f"{s['ours_b']}B", f"parameters, about {f['ratio']}&times; fewer than {s['rival']} ({s['rival_b']}B &dagger;)"),
+        (f"{MALAYMMLU['overall']}%", f"on MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}%)"),
+        ("1 GPU", f"to host it, vs ~{f['rival_gpus']} &times; {GPU_GB} GB GPUs for the weights of a "
+                  f"{s['rival_b']}B model"),
+    ]
+    tiles_html = "".join(
+        f'<div class="stat-tile"><p class="stat-num">{num}</p><p class="stat-label">{label}</p></div>'
+        for num, label in tiles
+    )
+    return f"""
+  <section id="small">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Small and powerful</span>
+        <h2>The #1 Malaysian model, small enough to run in a school</h2>
+        <p>{MALAYMMLU['model']}, our education model fine-tuned with Sasbadi, scores {MALAYMMLU['overall']}% on
+        MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}), a model about {f['ratio']} times larger.
+        At {s['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
+      </div>
+      <div class="stat-tiles">{tiles_html}</div>
+      {size_chart()}
+      <div class="small-actions">
+        <a class="btn btn-primary" href="/merdeka-model-llm/#local">Why size matters</a>
+        <a class="btn btn-ghost" href="/merdeka-model-llm/#malaymmlu">Full MalayMMLU comparison</a>
+      </div>
+      <p class="cmp-credit">{MALAYMMLU['model']}: internal evaluation, 26 August 2026, on the full
+      {MALAYMMLU['questions']}-question MalayMMLU set. Other scores from the
+      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi MalayMMLU leaderboard</a>
+      (retrieved {PENDAKWAH_RETRIEVED}), with thanks. &dagger; YTL does not publish a parameter count for
+      {s['rival']}; we use that of {s['rival_base']}, the Z.ai model its name refers to. GPU count is for the
+      weights alone at FP16.</p>
+    </div>
+  </section>"""
+
+
 # ---------------------------------------------------------------------------
 # HOME
 # ---------------------------------------------------------------------------
 def build_home():
-    runner_up = malaysian_runner_up()
+    s = MODEL_SIZE
     art = '<img src="/assets/images/hero-rocket.webp" alt="Illustration of a rocket launching, representing Merdeka LLM\'s growth" width="420" height="336">'
     body = hero(
         "Malaysia's Sovereign AI",
         "Malaysia&rsquo;s AI for a Sovereign and Empowered Future",
         "Empowering Malaysia through AI sovereignty by Agmo Group: data, hosting, and ownership in Malaysian hands.",
-        actions=JOIN_BTN,
+        actions=JOIN_BTN + '<a class="btn btn-ghost" href="#small">Small and powerful</a>',
         art=art,
+        badges="".join(f'<span class="badge">{b}</span>' for b in (
+            f"{s['ours_b']}B parameters",
+            f"{MALAYMMLU['overall']}% on MalayMMLU",
+            "#1 Malaysian model",
+            "Runs on one GPU",
+        )),
     )
+    body += small_powerful_section()
     body += f"""
   <section>
     <div class="container">
@@ -468,19 +526,6 @@ def build_home():
     </div>
   </section>
 
-  <section class="bench-teaser">
-    <div class="container">
-      <div class="section-head center">
-        <span class="eyebrow">Benchmarked</span>
-        <h2>The #1 Malaysian model, small enough to run in a school</h2>
-        <p>{MALAYMMLU['model']}, our education model fine-tuned with Sasbadi, scores {MALAYMMLU['overall']}% on
-        MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}), a model about {size_facts()['ratio']} times larger.
-        At {MODEL_SIZE['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
-        <a class="btn btn-ghost" href="/merdeka-model-llm/#local">See why size matters</a>
-      </div>
-    </div>
-  </section>
-
   <section class="section-alt">
     <div class="container">
       <div class="section-head center">
@@ -490,9 +535,7 @@ def build_home():
       <div class="grid grid-3">
         <div class="card"><span class="num">01</span><h3>Sovereignty Focused</h3><p>Data privacy and security, with 100% Malaysian hosting and infrastructure.</p></div>
         <div class="card"><span class="num">02</span><h3>Built for Malaysians</h3><p>Tailored for Malaysian languages, cultures, and sectors while creating opportunities for Malaysians to contribute to AI development as data curators.</p></div>
-        <div class="card"><span class="num">03</span><h3>LLM Training as a Service</h3><p>Leverage our partnerships with Phison&rsquo;s aiDAPTIV+ and SNS to train your own AI models with the highest data security standards.</p></div>
-        <div class="card"><span class="num">04</span><h3>Benchmarked</h3><p>{MALAYMMLU['model']} is the #1 Malaysian model on MalayMMLU, and runs on a single GPU.</p></div>
-      </div>
+        <div class="card"><span class="num">03</span><h3>LLM Training as a Service</h3><p>Leverage our partnerships with Phison&rsquo;s aiDAPTIV+ and SNS to train your own AI models with the highest data security standards.</p></div>      </div>
     </div>
   </section>
 
@@ -1242,7 +1285,7 @@ def build_llms_txt(posts):
         "",
         "## Pages",
         "",
-        f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future",
+        f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: {MALAYMMLU['model']} has {MODEL_SIZE['ours_b']}B parameters, scores {MALAYMMLU['overall']}% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU",
         f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure",
         f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about {size_facts()['ratio']}x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
         f"- [LLM Training as a Service]({BASE_URL}/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS",

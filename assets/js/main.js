@@ -25,9 +25,13 @@ document.addEventListener('DOMContentLoaded', function () {
       tip.replaceChildren(value, name);
       var dot = pt.querySelector('.chart-dot').getBoundingClientRect();
       var box = wrap.getBoundingClientRect();
-      tip.style.left = (dot.left + dot.width / 2 - box.left + wrap.scrollLeft) + 'px';
-      tip.style.top = (dot.top - box.top) + 'px';
       tip.hidden = false;
+      // Centred on the dot, but kept inside the viewport (points near the edges on phones).
+      var half = tip.offsetWidth / 2, edge = 8;
+      var cx = Math.min(Math.max(dot.left + dot.width / 2, half + edge),
+                        document.documentElement.clientWidth - half - edge);
+      tip.style.left = (cx - box.left + wrap.scrollLeft) + 'px';
+      tip.style.top = (dot.top - box.top) + 'px';
     }
     function hide() { tip.hidden = true; }
     chart.querySelectorAll('.chart-pt').forEach(function (pt) {
