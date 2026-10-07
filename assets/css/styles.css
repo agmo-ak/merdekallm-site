@@ -315,7 +315,6 @@ section{padding:72px 0}
 .key-ours{background:var(--chart-ours)}
 .key-my{background:var(--chart-my)}
 .key-other{background:var(--chart-other)}
-.key-hollow{border:2px solid var(--chart-my)}
 .chart-scroll{position:relative}
 .size-chart svg{display:block;width:100%;max-width:820px;margin:0 auto;height:auto;font-family:var(--font)}
 .size-chart svg.chart-compact{display:none}
@@ -335,7 +334,6 @@ section{padding:72px 0}
 .pt-ours .chart-dot{fill:var(--chart-ours)}
 .pt-my .chart-dot{fill:var(--chart-my)}
 .pt-other .chart-dot{fill:var(--chart-other)}
-.chart-pt.is-hollow .chart-dot{fill:var(--surface);stroke:var(--chart-my);stroke-width:2.5}
 .chart-pt{cursor:default;outline:none}
 .chart-pt:hover .chart-dot,.chart-pt:focus-visible .chart-dot{stroke:var(--text);stroke-width:2.5}
 .chart-tip{position:absolute;pointer-events:none;transform:translate(-50%,calc(-100% - 12px));background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-md);border-radius:10px;padding:8px 12px;font-size:13px;white-space:nowrap;z-index:2}

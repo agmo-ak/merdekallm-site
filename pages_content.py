@@ -118,10 +118,9 @@ MODEL_PARAMS = {
     "Mistral Large 2512": (675, MISTRAL_L3_URL),
     "Kimi K2.6": (1000, "https://huggingface.co/moonshotai/Kimi-K2.6"),
     "Llama 4 Maverick": (400, "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"),
-    # YTL publishes no count; this is the size of the Z.ai GLM-5.1 model its name refers to.
+    # Fine-tuned from Z.ai's GLM-5.1, and fine-tuning keeps the parameter count.
     "ILMU GLM-5.1": (744, GLM5_URL),
 }
-BASE_SIZE_ONLY = {"ILMU GLM-5.1"}
 
 
 def malaysian_runner_up():
@@ -175,6 +174,7 @@ def size_chart():
     # Draw ours last so it sits on top.
     pts.sort(key=lambda p: p[4] == "ours")
     runner_up = malaysian_runner_up()
+    my_names = ", ".join(p[0] for p in pts if p[4] == "my")
     gpu_max_b = GPU_GB // 2  # FP16: 2 bytes per parameter
 
     def render(compact):
@@ -207,12 +207,10 @@ def size_chart():
         marks = ""
         for name, org, b, acc, kind in pts:
             cx, cy = x(b), y(acc)
-            hollow = " is-hollow" if name in BASE_SIZE_ONLY else ""
-            size_note = " (size of its GLM-5.1 base)" if name in BASE_SIZE_ONLY else ""
-            tip = f"{acc:.1f}% &middot; {fmt_params(b)} parameters{size_note}|{name} &middot; {org}"
-            label = f"{name}, {org}: {acc:.1f}% MalayMMLU accuracy, {fmt_params(b)} parameters{size_note}"
+            tip = f"{acc:.1f}% &middot; {fmt_params(b)} parameters|{name} &middot; {org}"
+            label = f"{name}, {org}: {acc:.1f}% MalayMMLU accuracy, {fmt_params(b)} parameters"
             r = 7 if kind == "ours" else 5
-            marks += (f'<g class="chart-pt pt-{kind}{hollow}" tabindex="0" role="img" aria-label="{label}" '
+            marks += (f'<g class="chart-pt pt-{kind}" tabindex="0" role="img" aria-label="{label}" '
                       f'data-tip="{tip}"><circle class="chart-hit" cx="{cx:.1f}" cy="{cy:.1f}" r="12"/>'
                       f'<circle class="chart-dot" cx="{cx:.1f}" cy="{cy:.1f}" r="{r}"/></g>')
 
@@ -238,7 +236,7 @@ def size_chart():
                 f'{band}{grid}{axes}{marks}{labels}</svg>')
 
     rows = "".join(
-        f'<tr><th scope="row">{name}{" &dagger;" if name in BASE_SIZE_ONLY else ""}</th><td>{fmt_params(b)}</td>'
+        f'<tr><th scope="row">{name}</th><td>{fmt_params(b)}</td>'
         f'<td>{acc:.1f}</td><td>' + (
             f'<a href="{MODEL_PARAMS[name][1]}" target="_blank" rel="noopener">Model card</a>'
             if name in MODEL_PARAMS else "Agmo Group") + '</td></tr>'
@@ -252,9 +250,8 @@ def size_chart():
         </figcaption>
         <ul class="chart-legend">
           <li><span class="key key-ours"></span>{MALAYMMLU['model']}</li>
-          <li><span class="key key-my"></span>Malaysian model</li>
+          <li><span class="key key-my"></span>{my_names}</li>
           <li><span class="key key-other"></span>Other models</li>
-          <li><span class="key key-hollow"></span>Size of base model (not published by YTL)</li>
         </ul>
         <div class="chart-scroll">
           {render(False)}
@@ -270,8 +267,8 @@ def size_chart():
               <tbody>{rows}</tbody>
             </table>
           </div>
-          <p class="cmp-credit">&dagger; YTL does not publish a parameter count for ILMU GLM-5.1; plotted at the size
-          of Z.ai&rsquo;s GLM-5.1. Accuracy from the Pendakwah Teknologi leaderboard, except
+          <p class="cmp-credit">ILMU GLM-5.1 is fine-tuned from Z.ai&rsquo;s GLM-5.1, so it has the same parameter
+          count. Accuracy from the Pendakwah Teknologi leaderboard, except
           {MALAYMMLU['model']} (internal evaluation). Total parameters; mixture-of-experts models use only part of
           them per token but must hold all of them in memory.</p>
         </details>
@@ -284,11 +281,10 @@ def local_hosting_section():
     assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
     rows = [
         ("MalayMMLU accuracy", f"{MALAYMMLU['overall']}%", f"{runner_up[2]}%"),
-        ("Parameters", f"{s['ours_b']}B", f"{s['rival_b']}B (size of its {s['rival_base']} base, mixture-of-experts)"),
+        ("Parameters", f"{s['ours_b']}B", f"{s['rival_b']}B (mixture-of-experts)"),
         ("Memory for the weights", f"~{f['ours_gb']} GB", f"~{f['rival_tb']} TB"),
         ("Hardware to host it", f"One {GPU_GB} GB GPU",
-         f"A data-centre cluster (~{f['rival_gpus']} &times; {GPU_GB} GB GPUs for the weights alone)"),
-        ("Where it can run", "In the school, or your own server room", "A data centre or a cloud API"),
+         f"~{f['rival_gpus']} &times; {GPU_GB} GB GPUs"),
     ]
     body = "".join(
         f'<tr><th scope="row">{label}</th><td class="is-ours">{ours}</td><td>{rival}</td></tr>'
@@ -300,8 +296,8 @@ def local_hosting_section():
       <div class="section-head center">
         <span class="eyebrow">Sovereign by size</span>
         <h2>Small enough to host in a school</h2>
-        <p>{MALAYMMLU['model']} outscores {s['rival']} on MalayMMLU with about {f['ratio']}&times; fewer
-        parameters. That is the difference between one GPU server in a school and a data-centre cluster.</p>
+        <p>At {s['ours_b']}B parameters, {MALAYMMLU['model']} runs on a single GPU server, so a school can host
+        it on its own premises.</p>
       </div>
       {size_chart()}
       <div class="cmp-wrap">
@@ -316,8 +312,8 @@ def local_hosting_section():
       <div class="grid grid-3 mt-lg">
         <div class="card"><h3>Student data stays in school</h3><p>Questions, answers and student work never
         leave the school&rsquo;s own server: sovereign by design, and simpler for PDPA compliance.</p></div>
-        <div class="card"><h3>A fraction of the hardware</h3><p>One GPU server instead of a data-centre
-        cluster, so a school or district can own its AI instead of renting it.</p></div>
+        <div class="card"><h3>Modest hardware</h3><p>One GPU server is enough, so a school or district can
+        own its AI instead of renting it.</p></div>
         <div class="card"><h3>No dependence on outside clouds</h3><p>It runs on the school network, so
         lessons don&rsquo;t stop when the internet or an overseas provider does.</p></div>
       </div>
@@ -328,8 +324,8 @@ def local_hosting_section():
         <ul>
           <li>Memory is for the model weights alone; running a model also needs some extra memory for the
           conversation itself.</li>
-          <li>YTL does not publish a size for {s['rival']}, so we use that of {s['rival_base']}, the Z.ai model its
-          name refers to ({s['rival_b']}B per
+          <li>{s['rival']} is fine-tuned from Z.ai&rsquo;s {s['rival_base']}, and fine-tuning does not change a
+          model&rsquo;s parameter count ({s['rival_b']}B per
           <a href="{s['rival_source']}" target="_blank" rel="noopener">Z.ai&rsquo;s GLM-5 repository</a>).</li>
           <li>A mixture-of-experts model uses only part of its parameters for each token, but all of them must be
           held in memory to serve it.</li>
@@ -370,7 +366,7 @@ def malaymmlu_comparison():
         if is_ours:
             params = f"{MODEL_SIZE['ours_b']}B"
         elif r[0] in MODEL_PARAMS:
-            params = fmt_params(MODEL_PARAMS[r[0]][0]) + (" &dagger;" if r[0] in BASE_SIZE_ONLY else "")
+            params = fmt_params(MODEL_PARAMS[r[0]][0])
         else:
             params = '<span class="cmp-na">Undisclosed</span>'
         body += (f'<tr{cls}><th scope="row">{r[0]}{tag}<span class="cmp-org">{r[1]}</span></th>'
@@ -382,9 +378,8 @@ def malaymmlu_comparison():
         <span class="eyebrow">#1 Malaysian model on MalayMMLU</span>
         <h2>How {MALAYMMLU['model']} compares</h2>
         <p>Accuracy (%) on MalayMMLU, the Malay-language knowledge benchmark. At {MALAYMMLU['overall']}%,
-        {MALAYMMLU['model']} scores highest of the Malaysian-built models ({MY_TAG}) in this comparison, ahead of
-        {runner_up[0]} ({runner_up[2]}) with about {size_facts()['ratio']}&times; fewer parameters, and sits among
-        frontier models from Google, OpenAI and Anthropic.</p>
+        {MALAYMMLU['model']} scores highest of the Malaysian-built models ({MY_TAG}) in this comparison and sits
+        among frontier models from Google, OpenAI and Anthropic.</p>
       </div>
       <div class="cmp-wrap">
         <table class="cmp-table">
@@ -398,7 +393,7 @@ def malaymmlu_comparison():
       <p class="cmp-more">Top {FRONTIER_SHOWN} leaderboard models and every Malaysian model shown.{above_note}
       <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">full leaderboard</a>.</p>
       <p class="cmp-credit">Source: <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi</a>,
-      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation. &dagger; Size of its GLM-5.1 base.</p>
+      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation.</p>
       <details class="cmp-method">
         <summary>How we compared</summary>
         <ul>
@@ -406,7 +401,6 @@ def malaymmlu_comparison():
           {MALAYMMLU['questions']}-question MalayMMLU set; the leaderboard samples 1,100 of these.</li>
           <li>It is not a leaderboard entry. Its category scores are rounded to match the leaderboard.</li>
           <li>&ldquo;#1 Malaysian model&rdquo; compares the Malaysian-built models in this table.</li>
-          <li>YTL does not publish a parameter count for ILMU GLM-5.1.</li>
           <li>MalayMMLU by Poh et al., UM &times; YTL AI Labs
           (<a href="{MALAYMMLU_PAPER_URL}" target="_blank" rel="noopener">Findings of EMNLP 2024</a>).</li>
         </ul>
@@ -447,14 +441,13 @@ def malaymmlu_benchmark():
 
 def small_powerful_section():
     """Homepage section: the size story, with the hub page's size chart."""
-    s, f = MODEL_SIZE, size_facts()
+    s = MODEL_SIZE
     runner_up = malaysian_runner_up()
     assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
     tiles = [
-        (f"{s['ours_b']}B", f"parameters, about {f['ratio']}&times; fewer than {s['rival']} ({s['rival_b']}B &dagger;)"),
-        (f"{MALAYMMLU['overall']}%", f"on MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}%)"),
-        ("1 GPU", f"to host it, vs ~{f['rival_gpus']} &times; {GPU_GB} GB GPUs for the weights of a "
-                  f"{s['rival_b']}B model"),
+        (f"{s['ours_b']}B", "parameters, compact enough to host on-premise"),
+        (f"{MALAYMMLU['overall']}%", "on MalayMMLU, the highest of the Malaysian-built models"),
+        ("1 GPU", f"to host it: a single {GPU_GB} GB GPU holds the weights"),
     ]
     tiles_html = "".join(
         f'<div class="stat-tile"><p class="stat-num">{num}</p><p class="stat-label">{label}</p></div>'
@@ -467,8 +460,7 @@ def small_powerful_section():
         <span class="eyebrow">Small and powerful</span>
         <h2>The #1 Malaysian model, small enough to run in a school</h2>
         <p>{MALAYMMLU['model']}, our education model fine-tuned with Sasbadi, scores {MALAYMMLU['overall']}% on
-        MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}), a model about {f['ratio']} times larger.
-        At {s['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
+        MalayMMLU. At {s['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
       </div>
       <div class="stat-tiles">{tiles_html}</div>
       {size_chart()}
@@ -477,7 +469,7 @@ def small_powerful_section():
         <a class="btn btn-ghost" href="/merdeka-model-llm/#malaymmlu">Full MalayMMLU comparison</a>
       </div>
       <p class="cmp-credit">Source: <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi</a>,
-      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation. &dagger; Size of its {s['rival_base']} base.
+      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation.
       GPU count is for the model weights alone.</p>
     </div>
   </section>"""
@@ -1300,7 +1292,7 @@ def build_llms_txt(posts):
         "",
         f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: {MALAYMMLU['model']} has {MODEL_SIZE['ours_b']}B parameters, scores {MALAYMMLU['overall']}% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU",
         f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure",
-        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about {size_facts()['ratio']}x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
+        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, at 27B parameters, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
         f"- [LLM Training as a Service]({BASE_URL}/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS",
         f"- [LLM Gig Economy]({BASE_URL}/llm-gig-economy/): Contribution and curatorship platform for Malaysians",
         f"- [Become a Curator]({BASE_URL}/curator/): Review, refine, and validate data used to train Merdeka LLM",
