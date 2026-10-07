@@ -424,7 +424,7 @@ def malaymmlu_benchmark():
 # ---------------------------------------------------------------------------
 def build_home():
     runner_up = malaysian_runner_up()
-    art = '<img src="/assets/images/hero-rocket.gif" alt="Illustration of a rocket launching, representing Merdeka LLM\'s growth" width="420">'
+    art = '<img src="/assets/images/hero-rocket.webp" alt="Illustration of a rocket launching, representing Merdeka LLM\'s growth" width="420" height="336">'
     body = hero(
         "Malaysia's Sovereign AI",
         "Malaysia&rsquo;s AI for a Sovereign and Empowered Future",
@@ -1208,7 +1208,7 @@ def build_sitemap(posts):
     # Real content images (favicon/decorative shapes excluded) — image sitemap
     # entries help these get (re-)indexed under the new domain for image search.
     page_images = {
-        "/": [(f"{BASE_URL}/assets/images/hero-rocket.gif", "Merdeka LLM: rocket illustration representing Malaysia's AI growth")],
+        "/": [(f"{BASE_URL}/assets/images/hero-rocket.webp", "Merdeka LLM: rocket illustration representing Malaysia's AI growth")],
     }
     entries = []
     for u in urls:
