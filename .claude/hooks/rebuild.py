@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PostToolUse hook: rerun build.py after the generator or blog sources change."""
+"""PostToolUse hook: rerun build.py after the generator, blog sources, CSS or JS change."""
 import json
 import os
 import subprocess
@@ -10,7 +10,8 @@ path = payload.get("tool_input", {}).get("file_path", "")
 root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 rel = os.path.relpath(os.path.abspath(path), root)
 
-is_source = rel in ("build.py", "pages_content.py") or (
+# CSS/JS too: every page links them with a content hash (asset_url in build.py).
+is_source = rel in ("build.py", "pages_content.py", "assets/css/styles.css", "assets/js/main.js") or (
     os.path.dirname(rel) == "content-source" and rel.endswith(".md")
 )
 if not is_source:

@@ -244,6 +244,13 @@ def script_hash(script_body):
     return "'sha256-" + base64.b64encode(digest).decode("ascii") + "'"
 
 
+def asset_url(path):
+    """Site path with a content hash, so a deploy never pairs new HTML with a
+    browser-cached old stylesheet or script (GitHub Pages caches for 10 min)."""
+    with open(os.path.join(ROOT, path.lstrip("/")), "rb") as f:
+        return f"{path}?v={hashlib.sha256(f.read()).hexdigest()[:10]}"
+
+
 def ga_snippet():
     return f"""
     <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
@@ -426,7 +433,7 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 <meta name="twitter:image" content="{og_image}">
 <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/images/favicon.svg">
-<link rel="stylesheet" href="/assets/css/styles.css">
+<link rel="stylesheet" href="{asset_url('/assets/css/styles.css')}">
 {jsonld_html}
 {extra_head}{ga_snippet()}
 </head>
@@ -454,7 +461,7 @@ def page_shell(*, title, description, path, body, active_nav=None, og_image=None
 {body}
 </main>
 {footer_html()}
-<script src="/assets/js/main.js"></script>
+<script src="{asset_url('/assets/js/main.js')}"></script>
 </body>
 </html>"""
 
