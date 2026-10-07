@@ -3,6 +3,7 @@ import os
 import re
 import glob
 import html
+import subprocess
 from build import (
     ROOT, PUBLISH_DIR, page_shell, write_page, contact_section, markdown_to_html,
     parse_frontmatter, DEFAULT_DESCRIPTION, EMAIL, PHONE, BASE_URL, SITE_NAME, OG_IMAGE,
@@ -652,6 +653,22 @@ def build_404():
 # ---------------------------------------------------------------------------
 # BLOG
 # ---------------------------------------------------------------------------
+def last_modified(path):
+    """Date a source file last changed: today if it has uncommitted edits,
+    otherwise its last commit date. None if git isn't available."""
+    import datetime as dt
+    rel = os.path.relpath(path, ROOT)
+    try:
+        dirty = subprocess.run(["git", "status", "--porcelain", "--", rel], cwd=ROOT,
+                               capture_output=True, text=True, check=True).stdout.strip()
+        if dirty:
+            return dt.date.today().isoformat()
+        return subprocess.run(["git", "log", "-1", "--format=%cs", "--", rel], cwd=ROOT,
+                              capture_output=True, text=True, check=True).stdout.strip() or None
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
 def load_posts():
     posts = []
     for path in sorted(glob.glob(os.path.join(ROOT, "content-source", "*.md"))):
@@ -667,6 +684,7 @@ def load_posts():
             "author": fm.get("author", "Aik Keong Tan"),
             "date": fm.get("date", "2024-11-01"),
             "readtime": fm.get("readtime", "4 min read"),
+            "modified": last_modified(path) or fm.get("date", "2024-11-01"),
             "body_html": markdown_to_html(body_md),
             "excerpt": (excerpt[:180] + "…") if len(excerpt) > 180 else excerpt,
         })
@@ -777,7 +795,13 @@ STATIC_PATHS = [
 
 def build_sitemap(posts):
     import datetime as dt
-    today = dt.date.today().isoformat()
+    # Static page bodies all live in pages_content.py, so they share its date.
+    # Template-only changes in build.py deliberately don't bump lastmod.
+    static_date = last_modified(os.path.join(ROOT, "pages_content.py")) or dt.date.today().isoformat()
+    lastmod = {u: static_date for u in STATIC_PATHS}
+    for p in posts:
+        lastmod[f"/post/{p['slug']}/"] = p["modified"]
+    lastmod["/blog/"] = max([static_date] + [p["modified"] for p in posts])
     urls = list(STATIC_PATHS) + [f"/post/{p['slug']}/" for p in posts]
     # Real content images (favicon/decorative shapes excluded) — image sitemap
     # entries help these get (re-)indexed under the new domain for image search.
@@ -791,7 +815,7 @@ def build_sitemap(posts):
             f"\n    <image:image><image:loc>{src}</image:loc><image:title>{html.escape(title, quote=True)}</image:title></image:image>"
             for src, title in imgs
         )
-        entries.append(f"  <url>\n    <loc>{BASE_URL}{u}</loc>\n    <lastmod>{today}</lastmod>{img_tags}\n  </url>")
+        entries.append(f"  <url>\n    <loc>{BASE_URL}{u}</loc>\n    <lastmod>{lastmod[u]}</lastmod>{img_tags}\n  </url>")
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '

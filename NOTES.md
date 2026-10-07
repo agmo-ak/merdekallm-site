@@ -2,21 +2,20 @@
 
 Static site generator: `build.py` + `pages_content.py` render everything in
 `content-source/*.md` (blog posts) and the hand-written page bodies into
-plain static HTML under folder-per-slug (`docs/why-sovereignty-matters/index.html`
+plain static HTML under folder-per-slug (`why-sovereignty-matters/index.html`
 etc.), matching the URL structure of the old Wix site.
 
-**Repo layout**: GitHub Pages is configured to publish only the `docs/`
-folder (Settings → Pages → source = `main` branch, `/docs`). Everything
-else at the repo root — `build.py`, `pages_content.py`, `content-source/`,
-this file — is the generator/source and never goes live. (Originally
-everything was published straight from the repo root, which meant the
-build script and raw blog markdown were publicly downloadable from
-merdekallm.com; moved to `docs/` to fix that.)
+**Repo layout**: GitHub Pages publishes the repo root of the `main` branch,
+so the generated HTML sits alongside the generator. This means `build.py`,
+`pages_content.py` and `content-source/` are publicly downloadable from
+merdekallm.com. Moving the output to `docs/` was tried (2026-09-19) but
+changing the Pages source path broke the live site, so it was reverted.
+Revisit with care if hiding the source matters.
 
 To rebuild after editing content or templates:
 
 ```bash
-python3 build.py    # regenerates everything under docs/
+python3 build.py    # regenerates all pages, sitemap.xml and llms.txt in place
 ```
 
 ## Still needs your input before this is fully live
