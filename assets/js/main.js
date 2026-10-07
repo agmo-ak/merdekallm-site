@@ -10,6 +10,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Size chart tooltip: same details on hover and keyboard focus. Every value is
+  // also in the chart's data table, so the tooltip never gates anything.
+  document.querySelectorAll('.size-chart').forEach(function (chart) {
+    var wrap = chart.querySelector('.chart-scroll');
+    var tip = chart.querySelector('.chart-tip');
+    if (!wrap || !tip) return;
+    function show(pt) {
+      var parts = (pt.getAttribute('data-tip') || '').split('|');
+      var value = document.createElement('strong');
+      var name = document.createElement('span');
+      value.textContent = parts[0] || '';
+      name.textContent = parts[1] || '';
+      tip.replaceChildren(value, name);
+      var dot = pt.querySelector('.chart-dot').getBoundingClientRect();
+      var box = wrap.getBoundingClientRect();
+      tip.style.left = (dot.left + dot.width / 2 - box.left + wrap.scrollLeft) + 'px';
+      tip.style.top = (dot.top - box.top) + 'px';
+      tip.hidden = false;
+    }
+    function hide() { tip.hidden = true; }
+    chart.querySelectorAll('.chart-pt').forEach(function (pt) {
+      pt.addEventListener('pointerenter', function () { show(pt); });
+      pt.addEventListener('pointerleave', hide);
+      pt.addEventListener('focus', function () { show(pt); });
+      pt.addEventListener('blur', hide);
+    });
+  });
+
   // Contact form: progressive enhancement over FormSubmit.co's native POST.
   var form = document.querySelector('form[data-contact-form]');
   if (form) {

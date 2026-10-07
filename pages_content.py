@@ -36,11 +36,394 @@ def hero(eyebrow, title, lede, actions="", art=""):
 
 JOIN_BTN = '<a class="btn btn-primary" href="/#contact">Join the AI Revolution</a>'
 
+# MerdekaLLM-Sasbadi-27b on MalayMMLU, from our internal evaluation run.
+# Not a leaderboard listing: don't claim a rank until it is listed.
+MALAYMMLU = {
+    "model": "MerdekaLLM-Sasbadi-27b",
+    "date": "2026-08-26",
+    "overall": "84.9",
+    "questions": "24,213",  # full MalayMMLU set, not the leaderboard's 1,100 sample
+    # Scored generate-and-parse, same as the leaderboard. If a run ever switches to
+    # first-token logprob, compare against ILMU's official 87.2% instead.
+    "categories": [
+        ("STEM", "87.49"),
+        ("Language", "87.23"),
+        ("Social science", "80.60"),
+        ("Humanities", "87.31"),
+        ("Others", "84.43"),
+    ],
+}
+MALAYMMLU_PAPER_URL = "https://aclanthology.org/2024.findings-emnlp.36/"
+
+# Comparison rows from the Pendakwah Teknologi MalayMMLU leaderboard (credited on
+# the page). Copied by hand, so re-check the source when updating.
+# (model, organisation, overall, STEM, Language, Social science, Humanities, Others)
+PENDAKWAH_URL = "https://pendakwah.tech/bahasa/mmlu/"
+PENDAKWAH_RETRIEVED = "7 October 2026"
+PENDAKWAH_LEADERBOARD = [
+    ("Gemini 3.1 Pro", "Google", "91.5", 91, 96, 89, 93, 89),
+    ("GPT-5.5", "OpenAI", "89.3", 89, 93, 85, 90, 89),
+    ("Claude Opus 4.8", "Anthropic", "88.7", 86, 90, 86, 92, 89),
+    ("Kimi K3", "Moonshot (Ollama Cloud)", "87.5", 89, 91, 84, 90, 83),
+    ("Qwen 3.7 Max", "Alibaba", "86.6", 83, 92, 86, 91, 81),
+    ("DeepSeek V4 Pro 0813", "DeepSeek (Ollama Cloud)", "85.5", 86, 89, 82, 87, 84),
+    ("Qwen 3.5 397B", "Alibaba (Ollama Cloud)", "85.4", 85, 90, 81, 87, 84),
+    ("ILMU GLM-5.1", "YTL AI Labs", "84.0", 85, 86, 80, 85, 84),
+    ("DeepSeek V4 Pro", "DeepSeek", "83.8", 85, 89, 80, 84, 81),
+    ("ILMU v3.1", "YTL AI Labs", "83.1", 84, 87, 80, 84, 81),
+    ("MiniMax M3", "MiniMax (Ollama Cloud)", "82.8", 85, 85, 79, 87, 78),
+    ("Grok 4.3", "xAI", "82.3", 81, 84, 80, 83, 83),
+    ("GLM-5.2", "Z.ai", "81.8", 83, 86, 84, 81, 75),
+    ("Mistral Large 3", "Mistral (Ollama Cloud)", "81.5", 82, 86, 79, 82, 77),
+    ("Kimi K2.6", "Moonshot", "80.7", 85, 86, 75, 81, 76),
+    ("Mistral Large 2512", "Mistral", "80.4", 79, 83, 80, 82, 77),
+    ("MiniMax M3", "MiniMax", "79.6", 82, 84, 77, 79, 76),
+    ("Llama 4 Maverick", "Meta", "78.1", 84, 79, 76, 78, 74),
+    ("ILMU Vision v1.3", "YTL AI Labs", "74.9", 79, 75, 73, 74, 74),
+    ("ILMU Mini v3.3", "YTL AI Labs", "71.8", 74, 72, 72, 71, 70),
+    ("GLM-5.3", "Z.ai (Ollama Cloud)", "71.6", 65, 74, 70, 76, 74),
+]
+
+
+DATA_PARTNER_BTN = '<a class="btn btn-primary" href="/#contact">Become a data partner</a>'
+
+
+def data_partner_callout(domain, who):
+    return f"""
+        <div class="hub-callout">
+          <h4>Become our {domain} data partner</h4>
+          <p>We&rsquo;re building the next Merdeka {domain} model with a partner who knows the field: {who}.</p>
+        </div>"""
+
+
+MALAYSIAN_ORGS = {"YTL AI Labs"}
+
+
+# Total parameters (billions) from each developer's own model card or repo.
+# Only models with an official count are plotted; closed models are left out.
+GLM5_URL = "https://github.com/zai-org/GLM-5"
+MISTRAL_L3_URL = "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512"
+MODEL_PARAMS = {
+    "Kimi K3": (2800, "https://huggingface.co/moonshotai/Kimi-K3"),
+    "DeepSeek V4 Pro 0813": (1600, "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813"),
+    "DeepSeek V4 Pro": (1600, "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"),
+    "Qwen 3.5 397B": (397, "https://huggingface.co/Qwen/Qwen3.5-397B-A17B"),
+    "MiniMax M3": (428, "https://huggingface.co/MiniMaxAI/MiniMax-M3"),
+    "GLM-5.2": (744, GLM5_URL),
+    "GLM-5.3": (744, GLM5_URL),
+    "Mistral Large 3": (675, MISTRAL_L3_URL),
+    "Mistral Large 2512": (675, MISTRAL_L3_URL),
+    "Kimi K2.6": (1000, "https://huggingface.co/moonshotai/Kimi-K2.6"),
+    "Llama 4 Maverick": (400, "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"),
+    # YTL publishes no count; this is the size of the Z.ai GLM-5.1 model its name refers to.
+    "ILMU GLM-5.1": (744, GLM5_URL),
+}
+BASE_SIZE_ONLY = {"ILMU GLM-5.1"}
+
+
+def malaysian_runner_up():
+    """Best Malaysian model on the leaderboard. Fails the build if it beats ours,
+    so the '#1 Malaysian model' claim can't outlive the data behind it."""
+    best = max((r for r in PENDAKWAH_LEADERBOARD if r[1] in MALAYSIAN_ORGS), key=lambda r: float(r[2]))
+    assert float(MALAYMMLU["overall"]) > float(best[2]), (
+        f"{best[0]} ({best[2]}) beats {MALAYMMLU['model']}: drop the '#1 Malaysian model' claim")
+    return best
+
+
+MY_TAG = '<span class="tag-my" title="Malaysian-built model">MY</span>'
+
+# Size comparison with the runner-up Malaysian model. Memory is weights only at
+# FP16 (2 bytes/param), the precision our MalayMMLU score was measured at.
+MODEL_SIZE = {
+    "ours_b": 27,
+    "rival": "ILMU GLM-5.1",
+    "rival_base": "GLM-5.1",
+    "rival_b": MODEL_PARAMS["ILMU GLM-5.1"][0],
+    "rival_source": GLM5_URL,
+}
+GPU_GB = 80
+
+
+def size_facts():
+    s = MODEL_SIZE
+    ours_gb, rival_gb = s["ours_b"] * 2, s["rival_b"] * 2
+    return {
+        "ratio": round(s["rival_b"] / s["ours_b"]),
+        "ours_gb": ours_gb,
+        "rival_tb": f"{rival_gb / 1000:.1f}",
+        "rival_gpus": -(-rival_gb // GPU_GB),
+    }
+
+
+def fmt_params(b):
+    return f"{b / 1000:g}T" if b >= 1000 else f"{b:g}B"
+
+
+def size_chart():
+    """Static SVG scatter: total parameters (log x) vs MalayMMLU accuracy.
+    Colours come from CSS classes so dark mode works; hover is in main.js."""
+    import math
+    pts = [(MALAYMMLU["model"], "Agmo Group &times; Sasbadi", MODEL_SIZE["ours_b"],
+            float(MALAYMMLU["overall"]), "ours")]
+    for r in PENDAKWAH_LEADERBOARD:
+        if r[0] in MODEL_PARAMS:
+            kind = "my" if r[1] in MALAYSIAN_ORGS else "other"
+            pts.append((r[0], r[1], MODEL_PARAMS[r[0]][0], float(r[2]), kind))
+    # Draw ours last so it sits on top.
+    pts.sort(key=lambda p: p[4] == "ours")
+    runner_up = malaysian_runner_up()
+    gpu_max_b = GPU_GB // 2  # FP16: 2 bytes per parameter
+
+    def render(compact):
+        # Wide layout for desktop; compact one for phones keeps text legible
+        # instead of scaling the wide chart down or scrolling it sideways.
+        W, H, ML, MR, MT, MB = (400, 380, 40, 14, 36, 48) if compact else (720, 430, 56, 24, 36, 52)
+        PW, PH = W - ML - MR, H - MT - MB
+        X0, X1, Y0, Y1 = 10, 5000, 70, 90
+
+        def x(b):
+            return ML + (math.log10(b) - math.log10(X0)) / (math.log10(X1) - math.log10(X0)) * PW
+
+        def y(a):
+            return MT + (Y1 - a) / (Y1 - Y0) * PH
+
+        grid = ""
+        for a in range(Y0, Y1 + 1, 5):
+            grid += (f'<line class="chart-grid" x1="{ML}" x2="{W - MR}" y1="{y(a):.1f}" y2="{y(a):.1f}"/>'
+                     f'<text class="chart-tick" x="{ML - 8}" y="{y(a) + 4:.1f}" text-anchor="end">{a}</text>')
+        for b in (10, 100, 1000):
+            grid += (f'<line class="chart-grid" x1="{x(b):.1f}" x2="{x(b):.1f}" y1="{MT}" y2="{MT + PH}"/>'
+                     f'<text class="chart-tick" x="{x(b):.1f}" y="{MT + PH + 18}" text-anchor="middle">{fmt_params(b)}</text>')
+
+        band_lines = (["Fits one", f"{GPU_GB} GB GPU", "(FP16)"] if compact
+                      else [f"Fits one {GPU_GB} GB GPU", f"(&le;{gpu_max_b}B at FP16)"])
+        band = f'<rect class="chart-band" x="{ML}" y="{MT}" width="{x(gpu_max_b) - ML:.1f}" height="{PH}"/>'
+        band += "".join(f'<text class="chart-band-label" x="{ML + 6}" y="{MT + 16 + 14 * i}">{t}</text>'
+                        for i, t in enumerate(band_lines))
+
+        marks = ""
+        for name, org, b, acc, kind in pts:
+            cx, cy = x(b), y(acc)
+            hollow = " is-hollow" if name in BASE_SIZE_ONLY else ""
+            size_note = " (size of its GLM-5.1 base)" if name in BASE_SIZE_ONLY else ""
+            tip = f"{acc:.1f}% &middot; {fmt_params(b)} parameters{size_note}|{name} &middot; {org}"
+            label = f"{name}, {org}: {acc:.1f}% MalayMMLU accuracy, {fmt_params(b)} parameters{size_note}"
+            r = 7 if kind == "ours" else 5
+            marks += (f'<g class="chart-pt pt-{kind}{hollow}" tabindex="0" role="img" aria-label="{label}" '
+                      f'data-tip="{tip}"><circle class="chart-hit" cx="{cx:.1f}" cy="{cy:.1f}" r="12"/>'
+                      f'<circle class="chart-dot" cx="{cx:.1f}" cy="{cy:.1f}" r="{r}"/></g>')
+
+        # Selective direct labels: ours, plus the Malaysian runner-up where there's room.
+        ox, oy = x(MODEL_SIZE["ours_b"]), y(float(MALAYMMLU["overall"]))
+        ours_value = f'{MODEL_SIZE["ours_b"]}B &middot; {MALAYMMLU["overall"]}%'
+        if compact:
+            labels = (f'<text class="chart-label is-strong" x="{ox - 4:.1f}" y="{oy + 24:.1f}">{MALAYMMLU["model"]}</text>'
+                      f'<text class="chart-label" x="{ox - 4:.1f}" y="{oy + 39:.1f}">{ours_value}</text>')
+        else:
+            rx, ry = x(MODEL_PARAMS[runner_up[0]][0]), y(float(runner_up[2]))
+            labels = (f'<text class="chart-label is-strong" x="{ox + 14:.1f}" y="{oy - 2:.1f}">{MALAYMMLU["model"]}</text>'
+                      f'<text class="chart-label" x="{ox + 14:.1f}" y="{oy + 14:.1f}">{ours_value}</text>'
+                      f'<text class="chart-label" x="{rx - 12:.1f}" y="{ry + 4:.1f}" text-anchor="end">'
+                      f'{runner_up[0]} &middot; {runner_up[2]}%</text>')
+
+        axes = (f'<text class="chart-axis-title" x="{ML}" y="{MT - 14}">MalayMMLU accuracy (%)</text>'
+                f'<text class="chart-axis-title" x="{ML + PW / 2:.1f}" y="{H - 8}" text-anchor="middle">'
+                f'Total parameters (log scale)</text>')
+        cls = "chart-compact" if compact else "chart-wide"
+        return (f'<svg class="{cls}" viewBox="0 0 {W} {H}" role="group" '
+                f'aria-label="Scatter chart of model size against MalayMMLU accuracy">'
+                f'{band}{grid}{axes}{marks}{labels}</svg>')
+
+    rows = "".join(
+        f'<tr><th scope="row">{name}{" &dagger;" if name in BASE_SIZE_ONLY else ""}</th><td>{fmt_params(b)}</td>'
+        f'<td>{acc:.1f}</td><td>' + (
+            f'<a href="{MODEL_PARAMS[name][1]}" target="_blank" rel="noopener">Model card</a>'
+            if name in MODEL_PARAMS else "Agmo Group") + '</td></tr>'
+        for name, org, b, acc, kind in sorted(pts, key=lambda p: -p[3])
+    )
+    return f"""
+      <figure class="size-chart">
+        <figcaption>
+          <strong>Model size vs MalayMMLU accuracy</strong>
+          <span>Only models whose developers publish a parameter count. Hover or tab to a point for details.</span>
+        </figcaption>
+        <ul class="chart-legend">
+          <li><span class="key key-ours"></span>{MALAYMMLU['model']}</li>
+          <li><span class="key key-my"></span>Malaysian model</li>
+          <li><span class="key key-other"></span>Other models</li>
+          <li><span class="key key-hollow"></span>Size of base model (not published by YTL)</li>
+        </ul>
+        <div class="chart-scroll">
+          {render(False)}
+          {render(True)}
+          <div class="chart-tip" hidden></div>
+        </div>
+        <details class="chart-data">
+          <summary>Chart data and sources</summary>
+          <div class="cmp-wrap">
+            <table class="cmp-table">
+              <thead><tr><th scope="col">Model</th><th scope="col">Parameters</th><th scope="col">MalayMMLU</th>
+              <th scope="col">Size source</th></tr></thead>
+              <tbody>{rows}</tbody>
+            </table>
+          </div>
+          <p class="cmp-credit">&dagger; YTL does not publish a parameter count for ILMU GLM-5.1; plotted at the size
+          of Z.ai&rsquo;s GLM-5.1. Accuracy from the Pendakwah Teknologi leaderboard, except
+          {MALAYMMLU['model']} (internal evaluation). Total parameters; mixture-of-experts models use only part of
+          them per token but must hold all of them in memory.</p>
+        </details>
+      </figure>"""
+
+
+def local_hosting_section():
+    s, f = MODEL_SIZE, size_facts()
+    runner_up = malaysian_runner_up()
+    assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
+    rows = [
+        ("MalayMMLU accuracy", f"{MALAYMMLU['overall']}%", f"{runner_up[2]}%"),
+        ("Parameters", f"{s['ours_b']}B", f"{s['rival_b']}B (size of its {s['rival_base']} base, mixture-of-experts)"),
+        ("Memory for the weights (FP16)", f"~{f['ours_gb']} GB", f"~{f['rival_tb']} TB"),
+        ("Hardware to host it", f"One {GPU_GB} GB GPU",
+         f"A data-centre cluster (~{f['rival_gpus']} &times; {GPU_GB} GB GPUs for the weights alone)"),
+        ("Where it can run", "In the school, or your own server room", "A data centre or a cloud API"),
+    ]
+    body = "".join(
+        f'<tr><th scope="row">{label}</th><td class="is-ours">{ours}</td><td>{rival}</td></tr>'
+        for label, ours, rival in rows
+    )
+    return f"""
+  <section id="local">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Sovereign by size</span>
+        <h2>Small enough to host in a school</h2>
+        <p>{MALAYMMLU['model']} outscores {s['rival']} on MalayMMLU with about {f['ratio']}&times; fewer
+        parameters. That is the difference between one GPU server in a school and a data-centre cluster.</p>
+      </div>
+      {size_chart()}
+      <div class="cmp-wrap">
+        <table class="cmp-table vs-table">
+          <caption class="visually-hidden">{MALAYMMLU['model']} compared with {s['rival']} on size and hosting</caption>
+          <thead><tr><th scope="col"><span class="visually-hidden">Measure</span></th>
+          <th scope="col" class="is-ours">{MALAYMMLU['model']} {MY_TAG}</th>
+          <th scope="col">{s['rival']} {MY_TAG}</th></tr></thead>
+          <tbody>{body}</tbody>
+        </table>
+      </div>
+      <div class="grid grid-3 mt-lg">
+        <div class="card"><h3>Student data stays in school</h3><p>Questions, answers and student work never
+        leave the school&rsquo;s own server: sovereign by design, and simpler for PDPA compliance.</p></div>
+        <div class="card"><h3>A fraction of the hardware</h3><p>One GPU server instead of a data-centre
+        cluster, so a school or district can own its AI instead of renting it.</p></div>
+        <div class="card"><h3>No dependence on outside clouds</h3><p>It runs on the school network, so
+        lessons don&rsquo;t stop when the internet or an overseas provider does.</p></div>
+      </div>
+      <p class="cmp-credit">Memory is for the model weights alone at FP16 (2 bytes per parameter), the precision
+      {MALAYMMLU['model']} was evaluated at; serving also needs memory for context. YTL does not publish a size for {s['rival']}, so we use
+      that of {s['rival_base']}, the Z.ai model its name refers to (744B per
+      <a href="{s['rival_source']}" target="_blank" rel="noopener">Z.ai&rsquo;s GLM-5 repository</a>). A mixture-of-experts model uses only part of its parameters for each token,
+      but all of them must be held in memory to serve it. Scores from the
+      <a href="#malaymmlu">MalayMMLU comparison</a> below.</p>
+    </div>
+  </section>"""
+
+
+def malaymmlu_comparison():
+    ours = (MALAYMMLU["model"], "Agmo Group &times; Sasbadi", MALAYMMLU["overall"],
+            *(round(float(score)) for _, score in MALAYMMLU["categories"]))
+    # Show every model that beats ours (never hide a higher score) and every
+    # Malaysian model (backs the #1 claim); link out for the rest.
+    ours_score = float(MALAYMMLU["overall"])
+    shown = [r for r in PENDAKWAH_LEADERBOARD if float(r[2]) > ours_score or r[1] in MALAYSIAN_ORGS]
+    hidden = [r for r in PENDAKWAH_LEADERBOARD if r not in shown]
+    rows = sorted(shown + [ours], key=lambda r: float(r[2]), reverse=True)
+    runner_up = malaysian_runner_up()
+    body = ""
+    for r in rows:
+        is_ours = r is ours
+        tag = (f" {MY_TAG}" if is_ours or r[1] in MALAYSIAN_ORGS else "")
+        tag += ' <span class="tag-ours">Ours</span>' if is_ours else ""
+        cls = ' class="is-ours"' if is_ours else ""
+        cats = "".join(f"<td>{v}</td>" for v in r[3:])
+        if is_ours:
+            params = f"{MODEL_SIZE['ours_b']}B"
+        elif r[0] in MODEL_PARAMS:
+            params = fmt_params(MODEL_PARAMS[r[0]][0]) + (" &dagger;" if r[0] in BASE_SIZE_ONLY else "")
+        else:
+            params = '<span class="cmp-na">Undisclosed</span>'
+        body += (f'<tr{cls}><th scope="row">{r[0]}{tag}<span class="cmp-org">{r[1]}</span></th>'
+                 f'<td class="cmp-params">{params}</td><td class="cmp-overall">{r[2]}</td>{cats}</tr>')
+    return f"""
+  <section class="section-alt" id="malaymmlu">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">#1 Malaysian model on MalayMMLU</span>
+        <h2>How {MALAYMMLU['model']} compares</h2>
+        <p>Accuracy (%) on MalayMMLU, the Malay-language knowledge benchmark. At {MALAYMMLU['overall']}%,
+        {MALAYMMLU['model']} scores highest of the Malaysian-built models ({MY_TAG}) in this comparison, ahead of
+        {runner_up[0]} ({runner_up[2]}) with about {size_facts()['ratio']}&times; fewer parameters, and sits among
+        frontier models from Google, OpenAI, Anthropic and Alibaba.</p>
+      </div>
+      <div class="cmp-wrap">
+        <table class="cmp-table">
+          <caption class="visually-hidden">MalayMMLU accuracy by model and category</caption>
+          <thead><tr><th scope="col">Model</th><th scope="col">Parameters</th><th scope="col">Overall</th><th scope="col">STEM</th>
+          <th scope="col">Language</th><th scope="col">Social science</th><th scope="col">Humanities</th>
+          <th scope="col">Others</th></tr></thead>
+          <tbody>{body}</tbody>
+        </table>
+      </div>
+      <p class="cmp-more">Showing every model that scores above {MALAYMMLU['model']} and every Malaysian model.
+      {len(hidden)} more models, all scoring {max(float(r[2]) for r in hidden)} or lower, are on the
+      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">full leaderboard</a> and in the size chart above.</p>
+      <p class="cmp-credit">&dagger; Size of its GLM-5.1 base model; YTL does not publish a parameter count.
+      Comparison data from the
+      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi MalayMMLU leaderboard</a>
+      (retrieved {PENDAKWAH_RETRIEVED}), with thanks. {MALAYMMLU['model']} is our internal evaluation, scored the same way
+      (generate-and-parse) on the full {MALAYMMLU['questions']}-question MalayMMLU set, which the
+      leaderboard&rsquo;s 1,100 questions are sampled from. It is not a leaderboard entry. Its category scores
+      are rounded to match the leaderboard. &ldquo;#1 Malaysian model&rdquo; compares the Malaysian-built models
+      in this table. Benchmark by Poh et al., UM &times; YTL AI Labs
+      (<a href="{MALAYMMLU_PAPER_URL}" target="_blank" rel="noopener">Findings of EMNLP 2024</a>).</p>
+    </div>
+  </section>"""
+
+
+def malaymmlu_benchmark():
+    rows = "".join(
+        f'<tr><th scope="row">{name}</th>'
+        f'<td><meter min="0" max="100" value="{score}">{score}%</meter></td>'
+        f'<td class="bench-val">{score}%</td></tr>'
+        for name, score in MALAYMMLU["categories"]
+    )
+    return f"""
+        <div class="hub-bench">
+          <div class="bench-score">
+            <h5>MalayMMLU benchmark</h5>
+            <p class="bench-num">{MALAYMMLU['overall']}%</p>
+            <p class="bench-label">overall accuracy</p>
+            <p class="bench-badge">#1 Malaysian model</p>
+            <p class="bench-badge bench-badge-alt">{MODEL_SIZE['ours_b']}B &middot; runs on one GPU</p>
+          </div>
+          <table class="bench-table">
+            <caption class="visually-hidden">{MALAYMMLU['model']} MalayMMLU accuracy by category</caption>
+            <thead><tr><th scope="col">Category</th><th scope="col"><span class="visually-hidden">Bar</span></th><th scope="col">Accuracy</th></tr></thead>
+            <tbody>{rows}</tbody>
+          </table>
+          <p class="bench-note">Internal evaluation, 26 August 2026, using
+          <a href="{MALAYMMLU_PAPER_URL}" target="_blank" rel="noopener">MalayMMLU</a> (UM &times; YTL AI Labs,
+          Findings of EMNLP 2024), the full set of {MALAYMMLU['questions']} multiple-choice questions across
+          22 Malaysian school subjects. Overall accuracy is across all questions, so it weights each category by
+          its size.
+          <a href="#malaymmlu">See how it compares</a> &middot; <a href="#local">Why size matters</a>.</p>
+        </div>"""
+
 
 # ---------------------------------------------------------------------------
 # HOME
 # ---------------------------------------------------------------------------
 def build_home():
+    runner_up = malaysian_runner_up()
     art = '<img src="/assets/images/hero-rocket.gif" alt="Illustration of a rocket launching, representing Merdeka LLM\'s growth" width="420">'
     body = hero(
         "Malaysia's Sovereign AI",
@@ -81,6 +464,19 @@ def build_home():
           talent, custom data solutions, and seamless deployment &mdash; keeping organizations in control of their
           AI systems and data.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bench-teaser">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Benchmarked</span>
+        <h2>The #1 Malaysian model, small enough to run in a school</h2>
+        <p>{MALAYMMLU['model']}, our education model fine-tuned with Sasbadi, scores {MALAYMMLU['overall']}% on
+        MalayMMLU, ahead of {runner_up[0]} ({runner_up[2]}), a model about {size_facts()['ratio']} times larger.
+        At {MODEL_SIZE['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
+        <a class="btn btn-ghost" href="/merdeka-model-llm/#local">See why size matters</a>
       </div>
     </div>
   </section>
@@ -222,35 +618,37 @@ def build_sovereignty():
 # MERDEKA MODEL HUB
 # ---------------------------------------------------------------------------
 def build_model_hub():
-    def hub(num, title, applications, automations, benefit, demo_url=None, model_url=None, soon=False):
-        pill = '<span class="pill">Coming soon</span>' if soon else ""
-        link_html = ""
-        if demo_url or model_url:
-            buttons = []
-            if demo_url:
-                buttons.append(f'<a class="btn btn-primary" href="{demo_url}" target="_blank" rel="noopener">Try the Demo</a>')
-            if model_url:
-                buttons.append(f'<a class="btn btn-ghost" href="{model_url}" target="_blank" rel="noopener">View Model Card on Hugging Face</a>')
-            link_html = f'<div class="hub-actions">{"".join(buttons)}</div>'
+    def hub(num, title, applications, automations, benefit, soon=False,
+            anchor=None, partner=None, benchmark="", callout="", actions=""):
+        # soon=True shows "Coming soon"; a string shows that label instead.
+        pill = f'<span class="pill">{soon if isinstance(soon, str) else "Coming soon"}</span>' if soon else ""
+        id_attr = f' id="{anchor}"' if anchor else ""
+        partner_html = f'<p class="hub-partner">{partner}</p>' if partner else ""
+        link_html = f'<div class="hub-actions">{actions}</div>' if actions else ""
         return f"""
-      <div class="hub-card">
+      <div class="hub-card"{id_attr}>
         <div class="hub-card-head">
           <div class="hub-num">{num}</div>
           <h3>{title}</h3>
           {pill}
         </div>
+        {partner_html}
         <div class="hub-grid">
           <div class="hub-field"><h5>Applications</h5><p>{applications}</p></div>
           <div class="hub-field"><h5>Automations</h5><p>{automations}</p></div>
           <div class="hub-field"><h5>Key Benefit</h5><p>{benefit}</p></div>
         </div>
+        {benchmark}
+        {callout}
         {link_html}
       </div>"""
 
     body = hero(
         "Merdeka Model Hub",
         "Our Model Hub",
-        "Real-world applications of Merdeka LLM across Malaysia&rsquo;s priority sectors.",
+        "Merdeka LLM is a family of domain-specialised models, each fine-tuned with a partner who knows the "
+        "field. Here are its real-world applications across Malaysia&rsquo;s priority sectors. Hold quality "
+        "data in your field? Partner with us on the next model.",
         actions=JOIN_BTN,
     )
     body += '<section><div class="container">'
@@ -259,23 +657,32 @@ def build_model_hub():
         "Contract review automation, legal research assistance, document summarization, and legal compliance checks.",
         "Merdeka LLM can automate tedious legal tasks such as document drafting, contract reviews, and legal research, ensuring compliance with Malaysian laws and regulations.",
         "Increased legal department productivity, reduced manual workload, and enhanced accuracy in legal operations.",
-        demo_url="https://huggingface.co/spaces/Merdeka-LLM/merdeka-llm-lawyer-demo-chat-app",
-        model_url="https://huggingface.co/Merdeka-LLM/merdeka-llm-lawyer-3b-128k-instruct",
+        soon="New version coming soon",
+        anchor="legal",
+        callout=data_partner_callout(
+            "legal", "law firms, legal publishers and professional bodies with quality Malaysian legal content"),
+        actions=DATA_PARTNER_BTN,
     )
     body += hub(
         "02", "&#128101; Human Resources (HR)",
         "Automated resume screening, employee onboarding, compliance training, and performance evaluations.",
         "HR teams can leverage Merdeka LLM to automate key tasks such as resume filtering, employee evaluations, and regulatory compliance training, streamlining recruitment and management.",
         "Efficient hiring processes, improved employee engagement, and better overall HR operations with reduced human bias.",
-        demo_url="https://huggingface.co/spaces/Merdeka-LLM/merdeka-llm-hr-demo-chat-app",
-        model_url="https://huggingface.co/Merdeka-LLM/merdeka-llm-hr-3b-128k-instruct",
+        soon="New version coming soon",
+        anchor="hr",
+        callout=data_partner_callout(
+            "HR", "HR consultancies, payroll and HRMS providers, and training bodies with quality Malaysian HR content"),
+        actions=DATA_PARTNER_BTN,
     )
     body += hub(
-        "03", "&#127891; Education",
+        "03", "&#127891; Education: MerdekaLLM-Sasbadi-27b",
         "Personalized learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
         "Merdeka LLM can create personalized learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
         "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
-        soon=True,
+        anchor="education",
+        partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>.",
+        benchmark=malaymmlu_benchmark(),
+        actions='<a class="btn btn-primary" href="/#contact">Ask about this model</a>',
     )
     body += hub(
         "04", "&#128176; Finance",
@@ -283,12 +690,18 @@ def build_model_hub():
         "Leverage Merdeka LLM to streamline customer interactions, enhance security, and provide predictive financial insights, all while ensuring compliance with local regulations.",
         "Optimized operations, secure financial analysis, and enhanced customer experiences.",
         soon=True,
+        anchor="finance",
+        callout=data_partner_callout(
+            "finance", "banks, tax advisory firms and financial publishers with quality Malaysian finance content"),
+        actions=DATA_PARTNER_BTN,
     )
     body += '</div></section>'
+    body += local_hosting_section()
+    body += malaymmlu_comparison()
     body += contact_section()
     html_str = page_shell(
         title="Merdeka Model Hub",
-        description="Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance.",
+        description="Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including MerdekaLLM-Sasbadi-27b: the #1 Malaysian model on MalayMMLU, small enough at 27B parameters to host on-premise in a school.",
         path="/merdeka-model-llm/",
         body=body,
         active_nav="/merdeka-model-llm/",
@@ -842,7 +1255,7 @@ def build_llms_txt(posts):
         "",
         f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future",
         f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI Sovereignty as a Service — localized, Malaysia-hosted AI solutions",
-        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance",
+        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about {size_facts()['ratio']}x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
         f"- [LLM Training as a Service]({BASE_URL}/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS",
         f"- [LLM Gig Economy]({BASE_URL}/llm-gig-economy/): Contribution and curatorship platform for Malaysians",
         f"- [Become a Curator]({BASE_URL}/curator/): Review, refine, and validate data used to train Merdeka LLM",
