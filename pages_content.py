@@ -198,8 +198,8 @@ def size_chart():
             grid += (f'<line class="chart-grid" x1="{x(b):.1f}" x2="{x(b):.1f}" y1="{MT}" y2="{MT + PH}"/>'
                      f'<text class="chart-tick" x="{x(b):.1f}" y="{MT + PH + 18}" text-anchor="middle">{fmt_params(b)}</text>')
 
-        band_lines = (["Fits one", f"{GPU_GB} GB GPU", "(FP16)"] if compact
-                      else [f"Fits one {GPU_GB} GB GPU", f"(&le;{gpu_max_b}B at FP16)"])
+        band_lines = (["Fits one", f"{GPU_GB} GB GPU"] if compact
+                      else [f"Fits one {GPU_GB} GB GPU", f"(up to {gpu_max_b}B)"])
         band = f'<rect class="chart-band" x="{ML}" y="{MT}" width="{x(gpu_max_b) - ML:.1f}" height="{PH}"/>'
         band += "".join(f'<text class="chart-band-label" x="{ML + 6}" y="{MT + 16 + 14 * i}">{t}</text>'
                         for i, t in enumerate(band_lines))
@@ -285,7 +285,7 @@ def local_hosting_section():
     rows = [
         ("MalayMMLU accuracy", f"{MALAYMMLU['overall']}%", f"{runner_up[2]}%"),
         ("Parameters", f"{s['ours_b']}B", f"{s['rival_b']}B (size of its {s['rival_base']} base, mixture-of-experts)"),
-        ("Memory for the weights (FP16)", f"~{f['ours_gb']} GB", f"~{f['rival_tb']} TB"),
+        ("Memory for the weights", f"~{f['ours_gb']} GB", f"~{f['rival_tb']} TB"),
         ("Hardware to host it", f"One {GPU_GB} GB GPU",
          f"A data-centre cluster (~{f['rival_gpus']} &times; {GPU_GB} GB GPUs for the weights alone)"),
         ("Where it can run", "In the school, or your own server room", "A data centre or a cloud API"),
@@ -321,12 +321,20 @@ def local_hosting_section():
         <div class="card"><h3>No dependence on outside clouds</h3><p>It runs on the school network, so
         lessons don&rsquo;t stop when the internet or an overseas provider does.</p></div>
       </div>
-      <p class="cmp-credit">Memory is for the model weights alone at FP16 (2 bytes per parameter), the precision
-      {MALAYMMLU['model']} was evaluated at; serving also needs memory for context. YTL does not publish a size for {s['rival']}, so we use
-      that of {s['rival_base']}, the Z.ai model its name refers to (744B per
-      <a href="{s['rival_source']}" target="_blank" rel="noopener">Z.ai&rsquo;s GLM-5 repository</a>). A mixture-of-experts model uses only part of its parameters for each token,
-      but all of them must be held in memory to serve it. Scores from the
+      <p class="cmp-credit">Memory and GPU counts are for the model weights alone. Scores from the
       <a href="#malaymmlu">MalayMMLU comparison</a> below.</p>
+      <details class="cmp-method">
+        <summary>How we sized it</summary>
+        <ul>
+          <li>Memory is for the model weights alone; running a model also needs some extra memory for the
+          conversation itself.</li>
+          <li>YTL does not publish a size for {s['rival']}, so we use that of {s['rival_base']}, the Z.ai model its
+          name refers to ({s['rival_b']}B per
+          <a href="{s['rival_source']}" target="_blank" rel="noopener">Z.ai&rsquo;s GLM-5 repository</a>).</li>
+          <li>A mixture-of-experts model uses only part of its parameters for each token, but all of them must be
+          held in memory to serve it.</li>
+        </ul>
+      </details>
     </div>
   </section>"""
 
@@ -341,11 +349,15 @@ def malaymmlu_comparison():
     top = PENDAKWAH_LEADERBOARD[:FRONTIER_SHOWN]
     shown = top + [r for r in PENDAKWAH_LEADERBOARD if r[1] in MALAYSIAN_ORGS and r not in top]
     hidden_above = [r for r in PENDAKWAH_LEADERBOARD if r not in shown and float(r[2]) > ours_score]
-    hidden = [r for r in PENDAKWAH_LEADERBOARD if r not in shown and r not in hidden_above]
     above_note = ""
     if hidden_above:
-        names = ", ".join(f"{r[0]} ({r[2]})" for r in hidden_above)
-        above_note = (f"{len(hidden_above)} more models also score above {MALAYMMLU['model']}: {names}. ")
+        names = [r[0] for r in hidden_above]
+        names = names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+        lo, hi = min(r[2] for r in hidden_above), max(r[2] for r in hidden_above)
+        span = lo if lo == hi else f"{lo} to {hi}"
+        above_note = f" {names} also score above ours ({span}); the rest are on the"
+    else:
+        above_note = " The rest are on the"
     rows = sorted(shown + [ours], key=lambda r: float(r[2]), reverse=True)
     runner_up = malaysian_runner_up()
     body = ""
@@ -383,18 +395,22 @@ def malaymmlu_comparison():
           <tbody>{body}</tbody>
         </table>
       </div>
-      <p class="cmp-more">Showing the top {FRONTIER_SHOWN} models on the leaderboard and every Malaysian model.
-      {above_note}{len(hidden)} more models, all scoring {max(float(r[2]) for r in hidden)} or lower, are on the
-      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">full leaderboard</a> and in the size chart above.</p>
-      <p class="cmp-credit">&dagger; Size of its GLM-5.1 base model; YTL does not publish a parameter count.
-      Comparison data from the
-      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi MalayMMLU leaderboard</a>
-      (retrieved {PENDAKWAH_RETRIEVED}), with thanks. {MALAYMMLU['model']} is our internal evaluation, scored the same way
-      (generate-and-parse) on the full {MALAYMMLU['questions']}-question MalayMMLU set, which the
-      leaderboard&rsquo;s 1,100 questions are sampled from. It is not a leaderboard entry. Its category scores
-      are rounded to match the leaderboard. &ldquo;#1 Malaysian model&rdquo; compares the Malaysian-built models
-      in this table. Benchmark by Poh et al., UM &times; YTL AI Labs
-      (<a href="{MALAYMMLU_PAPER_URL}" target="_blank" rel="noopener">Findings of EMNLP 2024</a>).</p>
+      <p class="cmp-more">Top {FRONTIER_SHOWN} leaderboard models and every Malaysian model shown.{above_note}
+      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">full leaderboard</a>.</p>
+      <p class="cmp-credit">Source: <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi</a>,
+      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation. &dagger; Size of its GLM-5.1 base.</p>
+      <details class="cmp-method">
+        <summary>How we compared</summary>
+        <ul>
+          <li>{MALAYMMLU['model']} was scored the same way as the leaderboard (generate-and-parse) on the full
+          {MALAYMMLU['questions']}-question MalayMMLU set; the leaderboard samples 1,100 of these.</li>
+          <li>It is not a leaderboard entry. Its category scores are rounded to match the leaderboard.</li>
+          <li>&ldquo;#1 Malaysian model&rdquo; compares the Malaysian-built models in this table.</li>
+          <li>YTL does not publish a parameter count for ILMU GLM-5.1.</li>
+          <li>MalayMMLU by Poh et al., UM &times; YTL AI Labs
+          (<a href="{MALAYMMLU_PAPER_URL}" target="_blank" rel="noopener">Findings of EMNLP 2024</a>).</li>
+        </ul>
+      </details>
     </div>
   </section>"""
 
@@ -460,12 +476,9 @@ def small_powerful_section():
         <a class="btn btn-primary" href="/merdeka-model-llm/#local">Why size matters</a>
         <a class="btn btn-ghost" href="/merdeka-model-llm/#malaymmlu">Full MalayMMLU comparison</a>
       </div>
-      <p class="cmp-credit">{MALAYMMLU['model']}: internal evaluation, 26 August 2026, on the full
-      {MALAYMMLU['questions']}-question MalayMMLU set. Other scores from the
-      <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi MalayMMLU leaderboard</a>
-      (retrieved {PENDAKWAH_RETRIEVED}), with thanks. &dagger; YTL does not publish a parameter count for
-      {s['rival']}; we use that of {s['rival_base']}, the Z.ai model its name refers to. GPU count is for the
-      weights alone at FP16.</p>
+      <p class="cmp-credit">Source: <a href="{PENDAKWAH_URL}" target="_blank" rel="noopener">Pendakwah Teknologi</a>,
+      {PENDAKWAH_RETRIEVED}. Ours is an internal evaluation. &dagger; Size of its {s['rival_base']} base.
+      GPU count is for the model weights alone.</p>
     </div>
   </section>"""
 
