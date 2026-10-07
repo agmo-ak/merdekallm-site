@@ -5,9 +5,7 @@ date: 2024-11-01
 readtime: 3 min read
 ---
 
-**The Landscape of Generative AI in Malaysia: A Growing Hub of Innovation**
-
-As Artificial Intelligence (AI) continues to evolve, Malaysia is quickly emerging as a notable player in the generative AI landscape, particularly within the ASEAN region. Generative AI, which creates new content—be it text, images, or even complex models—has sparked transformative possibilities across industries. In Malaysia, the adoption and development of generative AI are gaining momentum, supported by a combination of governmental initiatives, startup activity, and public interest. Here's a closer look at Malaysia's expanding generative AI ecosystem and its impact on various sectors.
+As Artificial Intelligence (AI) continues to evolve, Malaysia is quickly emerging as a notable player in the generative AI landscape, particularly within the ASEAN region. Generative AI, which creates new content, be it text, images, or even complex models, has sparked transformative possibilities across industries. In Malaysia, the adoption and development of generative AI are gaining momentum, supported by a combination of governmental initiatives, startup activity, and public interest. Here's a closer look at Malaysia's expanding generative AI ecosystem and its impact on various sectors.
 
 ### Government Support and Strategic Initiatives
 

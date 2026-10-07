@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 5 min read
 ---
 
-**Building AI Readiness in Malaysia's Public and Private Sectors: Paving the Way for a Digital Future**
-
 Artificial Intelligence (AI) is transforming industries worldwide, and Malaysia is preparing to harness its potential across both public and private sectors. Building AI readiness involves creating a robust infrastructure, developing a skilled workforce, and fostering an environment where AI can thrive responsibly. Here's a closer look at what AI readiness means for Malaysia and the steps being taken to ensure that organizations across the country can effectively leverage AI to drive innovation, productivity, and growth.
 
 ### Understanding AI Readiness

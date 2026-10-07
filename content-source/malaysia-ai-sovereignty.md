@@ -5,9 +5,7 @@ date: 2024-11-01
 readtime: 4 min read
 ---
 
-**Malaysia's Path to AI Sovereignty: Building a Resilient and Autonomous Future**
-
-As Artificial Intelligence (AI) reshapes industries globally, Malaysia is making strides toward AI sovereignty—an approach aimed at ensuring autonomy, data security, and control over the nation's AI resources and infrastructure. In a world increasingly driven by digital technologies, AI sovereignty allows Malaysia to control its AI development and usage, reduce reliance on foreign technology, and prioritize national values and security.
+As Artificial Intelligence (AI) reshapes industries globally, Malaysia is making strides toward AI sovereignty: an approach aimed at ensuring autonomy, data security, and control over the nation's AI resources and infrastructure. In a world increasingly driven by digital technologies, AI sovereignty allows Malaysia to control its AI development and usage, reduce reliance on foreign technology, and prioritize national values and security.
 
 ### What is AI Sovereignty?
 
@@ -57,4 +55,4 @@ AI sovereignty is a complex undertaking with challenges that need to be addresse
 
 Malaysia's commitment to AI sovereignty marks a significant step toward a future where technology serves its citizens, economy, and society in a secure and autonomous manner. By focusing on local data control, fostering homegrown talent, and aligning AI with national interests, Malaysia is not only securing its digital future but also setting an example for other nations in the region.
 
-As the nation progresses with the launch of the National AI Office and other initiatives, Malaysia is poised to become a leader in AI within Southeast Asia. With a balanced approach to AI sovereignty—embracing collaboration while ensuring self-reliance—Malaysia is building a resilient digital ecosystem that prioritizes ethical use, economic independence, and national prosperity.
+As the nation progresses with the launch of the National AI Office and other initiatives, Malaysia is poised to become a leader in AI within Southeast Asia. With a balanced approach to AI sovereignty, embracing collaboration while ensuring self-reliance, Malaysia is building a resilient digital ecosystem that prioritizes ethical use, economic independence, and national prosperity.

@@ -1,13 +1,13 @@
 # Merdeka LLM
 
-> Malaysia's sovereign AI Large Language Model and AI Sovereignty as a Service platform, built by Malaysians, hosted in Malaysian data centers, trained on local data. Powered by Agmo Group.
+> Malaysia's sovereign AI Large Language Model and AI Sovereignty as a Service platform, built by Malaysians, hosted in Malaysian data centres, trained on local data. Powered by Agmo Group.
 
-Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a Service (with Phison's aiDAPTIV+ and SNS), and the LLM Gig Economy — a curatorship/contributor platform for Malaysians to help train Malaysia's own AI.
+Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a Service (with Phison's aiDAPTIV+ and SNS), and the LLM Gig Economy, a curatorship/contributor platform for Malaysians to help train Malaysia's own AI.
 
 ## Pages
 
 - [Merdeka LLM](https://merdekallm.com/): Malaysia's AI for a Sovereign and Empowered Future
-- [Why Sovereignty Matters](https://merdekallm.com/why-sovereignty-matters/): AI Sovereignty as a Service — localized, Malaysia-hosted AI solutions
+- [Why Sovereignty Matters](https://merdekallm.com/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure
 - [Merdeka Model Hub](https://merdekallm.com/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; 84.9% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about 28x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance
 - [LLM Training as a Service](https://merdekallm.com/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS
 - [LLM Gig Economy](https://merdekallm.com/llm-gig-economy/): Contribution and curatorship platform for Malaysians
@@ -16,18 +16,18 @@ Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a 
 
 ## Blog
 
-- [Building AI Readiness in Malaysia's Public and Private Sectors](https://merdekallm.com/post/building-ai-readiness-in-malaysia-s-public-and-private-sectors/): Building AI Readiness in Malaysia's Public and Private Sectors: Paving the Way for a Digital Future
-- [Malaysia AI Governance and Ethics (AIGE) Framework](https://merdekallm.com/post/malaysia-ai-governance-and-ethics-aige-framework/): Malaysia's AI Governance and Ethics Framework: Paving the Way for Responsible AI Development
-- [Malaysia AI: Promoting Responsible AI and AI Sovereignty](https://merdekallm.com/post/malaysia-ai-promoting-responsible-ai-and-ai-sovereignty/): Promoting Responsible AI and AI Sovereignty in Malaysia: Building a Secure and Inclusive Future
-- [Malaysia AI Sovereignty](https://merdekallm.com/post/malaysia-ai-sovereignty/): Malaysia's Path to AI Sovereignty: Building a Resilient and Autonomous Future
-- [Malaysia Gen AI Landscape: A Growing Hub of Innovation](https://merdekallm.com/post/malaysia-gen-ai-landscape-a-growing-hub-of-innovation/): The Landscape of Generative AI in Malaysia: A Growing Hub of Innovation
-- [Malaysia Large Language Model: Opportunities and Challenges](https://merdekallm.com/post/malaysia-large-language-model-opportunities-and-challenges/): Malaysia's Local Large Language Models: Challenges and Opportunities
-- [Malaysia National AI Office (NAIO)](https://merdekallm.com/post/malaysia-national-ai-office-naio/): Malaysia's AI Governance and Ethics Framework: The Launch of the National AI Office
+- [Building AI Readiness in Malaysia's Public and Private Sectors](https://merdekallm.com/post/building-ai-readiness-in-malaysia-s-public-and-private-sectors/): Artificial Intelligence (AI) is transforming industries worldwide, and Malaysia is preparing to harness its potential across both public and private sectors. Building AI readiness …
+- [Malaysia AI Governance and Ethics (AIGE) Framework](https://merdekallm.com/post/malaysia-ai-governance-and-ethics-aige-framework/): As Malaysia embraces the power of Artificial Intelligence (AI) across sectors, the government has taken significant steps to ensure the technology is used responsibly and ethically…
+- [Malaysia AI: Promoting Responsible AI and AI Sovereignty](https://merdekallm.com/post/malaysia-ai-promoting-responsible-ai-and-ai-sovereignty/): As Artificial Intelligence (AI) continues to reshape industries and societies globally, Malaysia is actively developing strategies to ensure the technology's responsible use while …
+- [Malaysia AI Sovereignty](https://merdekallm.com/post/malaysia-ai-sovereignty/): As Artificial Intelligence (AI) reshapes industries globally, Malaysia is making strides toward AI sovereignty: an approach aimed at ensuring autonomy, data security, and control o…
+- [Malaysia Gen AI Landscape: A Growing Hub of Innovation](https://merdekallm.com/post/malaysia-gen-ai-landscape-a-growing-hub-of-innovation/): As Artificial Intelligence (AI) continues to evolve, Malaysia is quickly emerging as a notable player in the generative AI landscape, particularly within the ASEAN region. Generati…
+- [Malaysia Large Language Model: Opportunities and Challenges](https://merdekallm.com/post/malaysia-large-language-model-opportunities-and-challenges/): As Artificial Intelligence (AI) and natural language processing (NLP) continue to revolutionize industries, Malaysia is actively exploring the development of local large language m…
+- [Malaysia National AI Office (NAIO)](https://merdekallm.com/post/malaysia-national-ai-office-naio/): Malaysia is taking significant strides in Artificial Intelligence (AI) development with the establishment of a comprehensive governance and ethics framework. A pivotal component of…
 - [Malaysia National Artificial Intelligence (AI-Rmap)](https://merdekallm.com/post/malaysia-national-artificial-intelligence-ai-rmap/): The National Artificial Intelligence Roadmap (AI-Rmap) for Malaysia 2021-2025 provides a strategic framework to harness AI for national growth. Aligned with the National Policy on …
-- [Malaysia's AI in Public Sector Initiatives and Smart Cities: Shaping a Modern Digital Nation](https://merdekallm.com/post/malaysia-s-ai-in-public-sector-initiatives-and-smart-cities-shaping-a-modern-digital-nation/): Malaysia's AI in Public Sector Initiatives and Smart Cities: Shaping a Modern Digital Nation
-- [Malaysia's AI Investment in Budget 2025](https://merdekallm.com/post/malaysia-s-ai-investment-in-budget-2025/): Malaysia's AI Investments in Budget 2025: A New Era for Innovation and Technology
-- [Malaysia Top AI Startups](https://merdekallm.com/post/malaysia-top-ai-startups/): Top AI Startups in Malaysia: Leading the Way in Innovation and Technology
-- [Malaysia Top Gen AI LLM Startups](https://merdekallm.com/post/malaysia-top-gen-ai-llm-startups/): Malaysia's Generative AI Startups: Leading the Way in Southeast Asia
+- [Malaysia's AI in Public Sector Initiatives and Smart Cities: Shaping a Modern Digital Nation](https://merdekallm.com/post/malaysia-s-ai-in-public-sector-initiatives-and-smart-cities-shaping-a-modern-digital-nation/): As Malaysia embraces digital transformation, Artificial Intelligence (AI) is playing an increasingly significant role in enhancing public sector initiatives and developing smart ci…
+- [Malaysia's AI Investment in Budget 2025](https://merdekallm.com/post/malaysia-s-ai-investment-in-budget-2025/): Malaysia's Budget 2025 presents a comprehensive vision for AI, technology, and digital transformation, signaling the government's strategic shift to solidify the nation as a region…
+- [Malaysia Top AI Startups](https://merdekallm.com/post/malaysia-top-ai-startups/): Malaysia is home to a growing number of AI startups, each pushing the boundaries of technology and innovation. These companies are developing cutting-edge solutions that address in…
+- [Malaysia Top Gen AI LLM Startups](https://merdekallm.com/post/malaysia-top-gen-ai-llm-startups/): Generative AI is rapidly reshaping industries across the globe, and Malaysia is emerging as a vibrant hub for this technology in Southeast Asia. With startups leveraging AI to addr…
 
 ## Legal
 

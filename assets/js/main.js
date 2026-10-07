@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function (res) {
           if (res.ok) {
             form.reset();
-            if (status) status.textContent = "Thanks — we'll be in touch shortly.";
+            if (status) status.textContent = "Thanks. We'll be in touch shortly.";
           } else {
             if (status) status.textContent = 'Something went wrong. Please email merdeka@agmogroup.com directly.';
           }

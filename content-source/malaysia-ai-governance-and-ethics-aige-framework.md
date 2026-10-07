@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 3 min read
 ---
 
-**Malaysia's AI Governance and Ethics Framework: Paving the Way for Responsible AI Development**
-
 As Malaysia embraces the power of Artificial Intelligence (AI) across sectors, the government has taken significant steps to ensure the technology is used responsibly and ethically. The **National Guidelines on AI Governance & Ethics (AIGE)**, spearheaded by the Ministry of Science, Technology, and Innovation (MOSTI), serve as a foundation for deploying AI in a manner that aligns with national values, global best practices, and societal well-being. Here's a look at Malaysia's approach to building a responsible AI ecosystem.
 
 ### A Commitment to Ethical AI Development

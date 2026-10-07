@@ -428,7 +428,7 @@ def build_home():
     body = hero(
         "Malaysia's Sovereign AI",
         "Malaysia&rsquo;s AI for a Sovereign and Empowered Future",
-        "Empowering Malaysia through AI sovereignty by Agmo Group — data, hosting, and ownership in Malaysian hands.",
+        "Empowering Malaysia through AI sovereignty by Agmo Group: data, hosting, and ownership in Malaysian hands.",
         actions=JOIN_BTN,
         art=art,
     )
@@ -439,7 +439,7 @@ def build_home():
         <span class="eyebrow">What is Merdeka LLM?</span>
         <h2>Built by Malaysians, for Malaysia</h2>
         <p>Merdeka LLM is Malaysia&rsquo;s AI Large Language Model designed to safeguard our digital future.
-        Built entirely by Malaysians, hosted in Malaysian data centers, and trained on local data, it ensures
+        Built entirely by Malaysians, hosted in Malaysian data centres, and trained on local data, it ensures
         that Malaysia&rsquo;s voice is at the forefront of AI development, powered by Agmo Group.</p>
       </div>
       <div class="grid grid-3">
@@ -447,7 +447,7 @@ def build_home():
           <div class="card-icon">{ICONS['train']}</div>
           <h3>LLM Training as a Service (TaaS)</h3>
           <p>In partnership with Phison&rsquo;s aiDAPTIV+ and SNS, we offer scalable LLM training as a service,
-          helping businesses unlock the power of AI for their own needs &mdash; from tailored language models to
+          helping businesses unlock the power of AI for their own needs, from tailored language models to
           data management solutions.</p>
         </div>
         <div class="card">
@@ -461,7 +461,7 @@ def build_home():
           <div class="card-icon">{ICONS['shield']}</div>
           <h3>AI Sovereignty as a Service</h3>
           <p>We empower enterprises and governments to achieve AI sovereignty with secure infrastructure, skilled
-          talent, custom data solutions, and seamless deployment &mdash; keeping organizations in control of their
+          talent, custom data solutions, and seamless deployment, keeping organisations in control of their
           AI systems and data.</p>
         </div>
       </div>
@@ -484,14 +484,14 @@ def build_home():
   <section class="section-alt">
     <div class="container">
       <div class="section-head center">
-        <span class="eyebrow">Key Highlights</span>
-        <h2>Leading the AI academy world &mdash; without forgetting where we came from</h2>
+        <span class="eyebrow">Why Merdeka LLM</span>
+        <h2>Built here, for the way Malaysia works</h2>
       </div>
       <div class="grid grid-3">
         <div class="card"><span class="num">01</span><h3>Sovereignty Focused</h3><p>Data privacy and security, with 100% Malaysian hosting and infrastructure.</p></div>
-        <div class="card"><span class="num">02</span><h3>Built for Malaysians</h3><p>Tailored for Malaysian languages, cultures, and sectors &mdash; creating opportunities for Malaysians to contribute to AI development as data curators.</p></div>
+        <div class="card"><span class="num">02</span><h3>Built for Malaysians</h3><p>Tailored for Malaysian languages, cultures, and sectors while creating opportunities for Malaysians to contribute to AI development as data curators.</p></div>
         <div class="card"><span class="num">03</span><h3>LLM Training as a Service</h3><p>Leverage our partnerships with Phison&rsquo;s aiDAPTIV+ and SNS to train your own AI models with the highest data security standards.</p></div>
-        <div class="card"><span class="num">04</span><h3>State-of-the-Art AI</h3><p>High performance, efficiency, and scalability for real-world applications.</p></div>
+        <div class="card"><span class="num">04</span><h3>Benchmarked</h3><p>{MALAYMMLU['model']} is the #1 Malaysian model on MalayMMLU, and runs on a single GPU.</p></div>
       </div>
     </div>
   </section>
@@ -512,7 +512,7 @@ def build_home():
         <div class="panel">
           <h3>Vision</h3>
           <p>A Malaysia where AI innovation thrives in full autonomy, protecting national interests while delivering
-          cutting-edge solutions for businesses, government, and society &mdash; with contributions from everyday
+          cutting-edge solutions for businesses, government, and society with contributions from everyday
           Malaysians and strategic partnerships with leading AI and data infrastructure providers.</p>
         </div>
       </div>
@@ -536,10 +536,9 @@ def build_home():
 def build_sovereignty():
     body = hero(
         "AI Sovereignty as a Service",
-        "Empower Your Business with Localized AI Solutions",
-        "Agmo Group enables businesses to leverage AI solutions powered by locally sourced data and hosted "
-        "within Malaysia&rsquo;s secure infrastructure &mdash; keeping your data within national borders, with "
-        "enhanced security and compliance with local regulations.",
+        "AI that keeps your data in Malaysia",
+        "Agmo Group builds AI for your business on local data and hosts it in Malaysia, so your data stays in "
+        "the country and you stay within local rules such as the PDPA.",
         actions=JOIN_BTN,
     )
     body += f"""
@@ -548,23 +547,21 @@ def build_sovereignty():
       <div class="grid grid-3">
         <div class="card">
           <div class="card-icon">{ICONS['train']}</div>
-          <h3>Finetuned AI Models</h3>
-          <p>Tailored AI models built on Malaysian legal, HR, and industry-specific datasets &mdash; such as the
-          Malaysia Legal LLM and Malaysia HR LLM &mdash; to automate processes like policy development, compliance,
-          and document review.</p>
+          <h3>Fine-tuned AI Models</h3>
+          <p>Models trained on Malaysian legal, HR and industry data, such as Malaysia Legal LLM and Malaysia HR
+          LLM, to automate policy drafting, compliance checks and document review.</p>
         </div>
         <div class="card">
           <div class="card-icon">{ICONS['channels']}</div>
           <h3>AI Deployment Across Channels</h3>
-          <p>Flexible deployment options: <strong>Public</strong> &mdash; reach customers on Facebook Messenger and
-          WhatsApp. <strong>Private</strong> &mdash; secure internal communication via Microsoft Teams and Slack.
-          <strong>Custom</strong> &mdash; mobile apps, websites, and chatbots.</p>
+          <p>Flexible deployment options:<br><strong>Public</strong> - reach customers on Facebook Messenger and
+          WhatsApp.<br><strong>Private</strong> - secure internal communication via Microsoft Teams and Slack.<br>
+          <strong>Custom</strong> - mobile apps, websites, and chatbots.</p>
         </div>
         <div class="card">
           <div class="card-icon">{ICONS['server']}</div>
           <h3>Infrastructure Hosted in Malaysia</h3>
-          <p>Ensure data sovereignty with AI solutions self-hosted within Malaysia, safeguarding customer privacy
-          and organizational data.</p>
+          <p>Everything runs on servers in Malaysia, so customer and company data never leaves the country.</p>
         </div>
       </div>
     </div>
@@ -580,9 +577,7 @@ def build_sovereignty():
         <div class="card">
           <span class="num">01</span>
           <h3>Protecting National Interests</h3>
-          <p>By developing and maintaining our own AI models, Malaysia can safeguard its data from foreign control
-          or misuse &mdash; keeping sensitive information within the country and protecting national security and
-          privacy.</p>
+          <p>When Malaysia runs its own models, sensitive data stays in the country and out of foreign control.</p>
         </div>
         <div class="card">
           <span class="num">02</span>
@@ -606,7 +601,7 @@ def build_sovereignty():
     body += contact_section()
     html_str = page_shell(
         title="Why Sovereignty Matters",
-        description="Why AI sovereignty matters for Malaysia — protecting national interests, economic independence, and data ownership.",
+        description="Why AI sovereignty matters for Malaysia: national interests, economic independence and data ownership.",
         path="/why-sovereignty-matters/",
         body=body,
         active_nav="/why-sovereignty-matters/",
@@ -654,7 +649,7 @@ def build_model_hub():
     body += '<section><div class="container">'
     body += hub(
         "01", "&#9878;&#65039; Legal",
-        "Contract review automation, legal research assistance, document summarization, and legal compliance checks.",
+        "Contract review automation, legal research assistance, document summarisation, and legal compliance checks.",
         "Merdeka LLM can automate tedious legal tasks such as document drafting, contract reviews, and legal research, ensuring compliance with Malaysian laws and regulations.",
         "Increased legal department productivity, reduced manual workload, and enhanced accuracy in legal operations.",
         soon="New version coming soon",
@@ -676,8 +671,8 @@ def build_model_hub():
     )
     body += hub(
         "03", "&#127891; Education: MerdekaLLM-Sasbadi-27b",
-        "Personalized learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
-        "Merdeka LLM can create personalized learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
+        "Personalised learning, curriculum development, and AI-driven tutoring platforms in both Malay and English.",
+        "Merdeka LLM can create personalised learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
         "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
         anchor="education",
         partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>.",
@@ -688,7 +683,7 @@ def build_model_hub():
         "04", "&#128176; Finance",
         "Tax advisory, tax planning, and automated customer service solutions.",
         "Leverage Merdeka LLM to streamline customer interactions, enhance security, and provide predictive financial insights, all while ensuring compliance with local regulations.",
-        "Optimized operations, secure financial analysis, and enhanced customer experiences.",
+        "Optimised operations, secure financial analysis, and enhanced customer experiences.",
         soon=True,
         anchor="finance",
         callout=data_partner_callout(
@@ -717,7 +712,7 @@ def build_taas():
         "LLM Training as a Service",
         "Train Your Own AI, Backed by Malaysian Infrastructure",
         "In partnership with Phison&rsquo;s aiDAPTIV+ and SNS, Merdeka LLM offers scalable LLM training as a "
-        "service &mdash; helping Malaysian enterprises unlock the power of AI for their own needs, from tailored "
+        "service while helping Malaysian enterprises unlock the power of AI for their own needs, from tailored "
         "language models to data management solutions.",
         actions=JOIN_BTN,
     )
@@ -728,14 +723,14 @@ def build_taas():
         <div class="card">
           <div class="card-icon">{ICONS['train']}</div>
           <h3>Tailored Model Training</h3>
-          <p>Train or fine-tune language models on your own organization&rsquo;s data, with Malaysian context,
+          <p>Train or fine-tune language models on your own organisation&rsquo;s data, with Malaysian context,
           languages, and compliance requirements built in from the start.</p>
         </div>
         <div class="card">
           <div class="card-icon">{ICONS['server']}</div>
           <h3>Secure, Local Infrastructure</h3>
           <p>Training runs on infrastructure hosted in Malaysia, in partnership with Phison&rsquo;s aiDAPTIV+ and
-          SNS &mdash; keeping sensitive training data under Malaysian data-sovereignty standards throughout.</p>
+          SNS, keeping sensitive training data under Malaysian data-sovereignty standards throughout.</p>
         </div>
         <div class="card">
           <div class="card-icon">{ICONS['shield']}</div>
@@ -752,9 +747,8 @@ def build_taas():
       <div class="section-head center">
         <span class="eyebrow">Who it&rsquo;s for</span>
         <h2>Built for Malaysia&rsquo;s enterprises</h2>
-        <p>Whether you need a language model tailored to your industry, or a data management pipeline that keeps
-        training data compliant and secure, our LLM Training as a Service gives Malaysian businesses a practical
-        path to their own sovereign AI &mdash; without building infrastructure from scratch.</p>
+        <p>Need a model for your industry, or a pipeline that keeps training data compliant? We bring the
+        infrastructure, so you don&rsquo;t have to build it.</p>
       </div>
     </div>
   </section>
@@ -762,7 +756,7 @@ def build_taas():
     body += contact_section()
     html_str = page_shell(
         title="LLM Training as a Service",
-        description="Scalable LLM training as a service, in partnership with Phison's aiDAPTIV+ and SNS — cutting-edge AI training for Malaysia's enterprises.",
+        description="Scalable LLM training as a service, in partnership with Phison's aiDAPTIV+ and SNS using cutting-edge AI training for Malaysia's enterprises.",
         path="/llm-training-as-a-service/",
         body=body,
         active_nav="/llm-training-as-a-service/",
@@ -777,7 +771,7 @@ def build_gig_economy():
     body = hero(
         "LLM Gig Economy",
         "Contribution and Curatorship",
-        "Merdeka LLM is more than a sovereign AI solution &mdash; it&rsquo;s a platform for Malaysians to actively "
+        "Merdeka LLM is more than a sovereign AI solution: it&rsquo;s a platform for Malaysians to actively "
         "contribute to AI development. Through curated contributions, individuals help ensure the quality of the "
         "LLM while earning income in the gig economy as data curators.",
         actions=JOIN_BTN,
@@ -788,7 +782,7 @@ def build_gig_economy():
       <div class="section-head center">
         <span class="eyebrow">How it works</span>
         <h2>Become a curator in three steps</h2>
-        <p>We&rsquo;re developing a platform that allows Malaysians to become curators &mdash; reviewing, refining,
+        <p>We&rsquo;re developing a platform that allows Malaysians to become curators: reviewing, refining,
         and approving data used to train the LLM. This ensures high-quality data and opens up new opportunities in
         the gig economy.</p>
       </div>
@@ -821,7 +815,7 @@ def build_gig_economy():
     body += contact_section()
     html_str = page_shell(
         title="LLM Gig Economy",
-        description="Malaysia's first LLM Gig Economy Platform — contribute and curate data, ensure AI quality, and earn income.",
+        description="Malaysia's first LLM Gig Economy Platform: contribute and curate data, ensure AI quality, and earn income.",
         path="/llm-gig-economy/",
         body=body,
         active_nav="/llm-gig-economy/",
@@ -849,7 +843,7 @@ def build_curator():
         <h2>The curator&rsquo;s role</h2>
         <p>Curators play an essential role in safeguarding the quality of data used in Merdeka LLM. As a curator,
         you&rsquo;ll refine, review, and validate data contributions, maintaining the high standards necessary for
-        Malaysia&rsquo;s premier LLM &mdash; validating data entries, ensuring adherence to Malaysia&rsquo;s unique
+        Malaysia&rsquo;s premier LLM, validating data entries, ensuring adherence to Malaysia&rsquo;s unique
         context, and helping prevent inaccuracies.</p>
       </div>
       <div class="steps">
@@ -867,7 +861,7 @@ def build_curator():
         <h2>Why become a curator</h2>
       </div>
       <div class="grid grid-3">
-        <div class="card"><h3>Income Generation</h3><p>Earn from data privacy- and security-conscious work, with 100% Malaysian hosting and infrastructure.</p></div>
+        <div class="card"><h3>Income Generation</h3><p>Earn from data privacy and security-conscious work, with 100% Malaysian hosting and infrastructure.</p></div>
         <div class="card"><h3>Flexible Working Hours</h3><p>Participate as a curator on your own schedule.</p></div>
         <div class="card"><h3>Play a Key Role in AI Quality</h3><p>By ensuring high-quality data, you contribute to an AI model that reflects Malaysia&rsquo;s needs and values.</p></div>
       </div>
@@ -877,7 +871,7 @@ def build_curator():
     body += contact_section()
     html_str = page_shell(
         title="Become a Curator",
-        description="Become a Merdeka LLM curator — review, refine, and validate the data that shapes Malaysia's sovereign AI, and earn as you go.",
+        description="Become a Merdeka LLM curator: review, refine and validate the data that shapes Malaysia's sovereign AI, and earn as you go.",
         path="/curator/",
         body=body,
         active_nav=None,
@@ -931,7 +925,7 @@ def build_contributor():
     body += contact_section()
     html_str = page_shell(
         title="Become a Contributor",
-        description="Join Merdeka LLM as a Contributor — supply and refine the data that powers Malaysia's sovereign AI, and earn as you contribute.",
+        description="Join Merdeka LLM as a Contributor: supply and refine the data that powers Malaysia's sovereign AI, and earn as you contribute.",
         path="/contributor/",
         body=body,
         active_nav=None,
@@ -963,7 +957,7 @@ def legal_page(title, path, updated, body_inner):
 
 
 def build_legal():
-    legal_page("Privacy Policy", "/privacy-policy/", "22 May 2026", f"""
+    legal_page("Privacy Policy", "/privacy-policy/", "7 October 2026", f"""
       <p>Agmo Group (&ldquo;we&rdquo;, &ldquo;us&rdquo;) operates {SITE_LINK} (&ldquo;the Site&rdquo;). This
       Privacy Policy explains what information we collect through the Site, how we use it, and the choices you
       have.</p>
@@ -975,7 +969,7 @@ def build_legal():
       AI Sovereignty as a Service, LLM Training as a Service, or the LLM Gig Economy / Curatorship programme,
       depending on the topic you selected.</p>
       <h2>Sharing</h2>
-      <p>We do not sell your personal data. Form submissions are processed by our form provider (Formspree) solely
+      <p>We do not sell your personal data. Form submissions are processed by our form provider (FormSubmit) solely
       to deliver your enquiry to us, and are not used by them for any other purpose.</p>
       <h2>Your rights</h2>
       <p>You may ask us to access, correct, or delete the information you&rsquo;ve submitted at any time by
@@ -1019,17 +1013,13 @@ def build_legal():
 
     legal_page("Accessibility Statement", "/accessibility-statement/", "22 May 2026", f"""
       <p>Agmo Group is working to make {SITE_LINK} accessible to people with disabilities.</p>
-      <h2>What web accessibility is</h2>
-      <p>An accessible site allows visitors with disabilities to browse the site with the same or a similar level
-      of ease and enjoyment as other visitors, achieved through the capabilities of the system the site runs on and
-      through assistive technologies.</p>
       <h2>Accessibility on this site</h2>
       <p>We aim to align this Site with WCAG 2.1 AA guidelines. This includes a semantic heading structure on every
       page, a skip-to-content link, keyboard-navigable menus and forms, visible focus states, alternative text on
-      meaningful images, and color combinations chosen to meet contrast requirements.</p>
+      meaningful images, and colour combinations chosen to meet contrast requirements.</p>
       <h2>Requests, issues, and suggestions</h2>
       <p>If you find an accessibility issue on the Site, or need further assistance, please contact us:</p>
-      <p>Agmo Group &mdash; <a href="mailto:{EMAIL}">{EMAIL}</a> &mdash; {PHONE}</p>
+      <p>Agmo Group &middot; <a href="mailto:{EMAIL}">{EMAIL}</a> &middot; {PHONE}</p>
     """)
 
 
@@ -1044,8 +1034,7 @@ def build_404():
   <div class="error-page">
     <div class="code">404</div>
     <h1>This page isn&rsquo;t available</h1>
-    <p>The page you&rsquo;re looking for may have moved. Try the
-    homepage, or explore Merdeka LLM below.</p>
+    <p>The page you&rsquo;re looking for may have moved. Try the homepage.</p>
     <a class="btn btn-primary" href="/">Go to Homepage</a>
   </div>
 """
@@ -1219,7 +1208,7 @@ def build_sitemap(posts):
     # Real content images (favicon/decorative shapes excluded) — image sitemap
     # entries help these get (re-)indexed under the new domain for image search.
     page_images = {
-        "/": [(f"{BASE_URL}/assets/images/hero-rocket.gif", "Merdeka LLM — rocket illustration representing Malaysia's AI growth")],
+        "/": [(f"{BASE_URL}/assets/images/hero-rocket.gif", "Merdeka LLM: rocket illustration representing Malaysia's AI growth")],
     }
     entries = []
     for u in urls:
@@ -1245,16 +1234,16 @@ def build_llms_txt(posts):
         f"# {SITE_NAME}",
         "",
         "> Malaysia's sovereign AI Large Language Model and AI Sovereignty as a Service platform, built by "
-        "Malaysians, hosted in Malaysian data centers, trained on local data. Powered by Agmo Group.",
+        "Malaysians, hosted in Malaysian data centres, trained on local data. Powered by Agmo Group.",
         "",
         f"{SITE_NAME} by Agmo Group offers AI Sovereignty as a Service, LLM Training as a Service (with Phison's "
-        "aiDAPTIV+ and SNS), and the LLM Gig Economy — a curatorship/contributor platform for Malaysians to help "
+        "aiDAPTIV+ and SNS), and the LLM Gig Economy, a curatorship/contributor platform for Malaysians to help "
         "train Malaysia's own AI.",
         "",
         "## Pages",
         "",
         f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future",
-        f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI Sovereignty as a Service — localized, Malaysia-hosted AI solutions",
+        f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure",
         f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, with about {size_facts()['ratio']}x fewer parameters than ILMU GLM-5.1, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
         f"- [LLM Training as a Service]({BASE_URL}/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS",
         f"- [LLM Gig Economy]({BASE_URL}/llm-gig-economy/): Contribution and curatorship platform for Malaysians",

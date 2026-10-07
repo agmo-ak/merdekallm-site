@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 3 min read
 ---
 
-**Malaysia's AI Investments in Budget 2025: A New Era for Innovation and Technology**
-
 Malaysia's Budget 2025 presents a comprehensive vision for AI, technology, and digital transformation, signaling the government's strategic shift to solidify the nation as a regional technology hub. Recognizing the transformative potential of AI, Budget 2025 has unveiled a significant commitment to developing AI capabilities, fostering a robust AI ecosystem, and driving innovation across key sectors. Here's an overview of how Malaysia is gearing up for an AI-driven future through its latest budget allocations.
 
 ### 1. **Boosting AI Research and Development**

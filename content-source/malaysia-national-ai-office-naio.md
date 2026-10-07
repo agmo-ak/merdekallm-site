@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 2 min read
 ---
 
-**Malaysia's AI Governance and Ethics Framework: The Launch of the National AI Office**
-
 Malaysia is taking significant strides in Artificial Intelligence (AI) development with the establishment of a comprehensive governance and ethics framework. A pivotal component of this initiative is the formation of the **National AI Office (NAIO)**, set to be officially launched on December 12, 2024, by Prime Minister Datuk Seri Anwar Ibrahim.
 
 ### Purpose and Objectives of the National AI Office

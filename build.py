@@ -310,7 +310,7 @@ def footer_html():
             <img src="/assets/images/favicon.svg" alt="" width="28" height="28">
             {SITE_NAME}
           </a>
-          <p>Malaysia's sovereign AI platform — built by Malaysians, hosted in Malaysian data centers, trained on local data. Powered by Agmo Group.</p>
+          <p>Malaysia's sovereign AI platform. Built by Malaysians, trained on local data and hosted in Malaysian data centres. Powered by Agmo Group.</p>
         </div>
         {"".join(cols)}
       </div>
@@ -329,7 +329,7 @@ def contact_section():
       <div class="section-head center">
         <span class="eyebrow">Get in touch</span>
         <h2>Let's Shape the Future Together</h2>
-        <p>Join us in building a brighter tomorrow — reach out anytime.</p>
+        <p>Join us in building a brighter tomorrow, reach out anytime.</p>
       </div>
       <div class="contact-wrap">
         <div class="contact-info">

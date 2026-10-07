@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 4 min read
 ---
 
-**Malaysia's Generative AI Startups: Leading the Way in Southeast Asia**
-
 Generative AI is rapidly reshaping industries across the globe, and Malaysia is emerging as a vibrant hub for this technology in Southeast Asia. With startups leveraging AI to address local and global needs, Malaysia is creating innovative solutions across sectors from education and healthcare to advanced language processing. Here's a look at some of the leading generative AI startups in Malaysia and the impact they're making.
 
 ### Key Players in Malaysia's Generative AI Startup Scene

@@ -5,9 +5,7 @@ date: 2024-11-01
 readtime: 4 min read
 ---
 
-**Promoting Responsible AI and AI Sovereignty in Malaysia: Building a Secure and Inclusive Future**
-
-As Artificial Intelligence (AI) continues to reshape industries and societies globally, Malaysia is actively developing strategies to ensure the technology's responsible use while establishing AI sovereignty. These twin goals—responsible AI and AI sovereignty—are critical for maintaining control over national data, ensuring ethical practices, and fostering a sustainable digital economy.
+As Artificial Intelligence (AI) continues to reshape industries and societies globally, Malaysia is actively developing strategies to ensure the technology's responsible use while establishing AI sovereignty. These twin goals, responsible AI and AI sovereignty, are critical for maintaining control over national data, ensuring ethical practices, and fostering a sustainable digital economy.
 
 ### Understanding Responsible AI and AI Sovereignty
 

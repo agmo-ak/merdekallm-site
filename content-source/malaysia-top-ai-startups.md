@@ -5,8 +5,6 @@ date: 2024-11-01
 readtime: 4 min read
 ---
 
-**Top AI Startups in Malaysia: Leading the Way in Innovation and Technology**
-
 Malaysia is home to a growing number of AI startups, each pushing the boundaries of technology and innovation. These companies are developing cutting-edge solutions that address industry-specific needs and support Malaysia's digital transformation goals. From language models and facial recognition to data analytics and digital solutions, here's a look at some of the top AI startups in Malaysia making a significant impact across various sectors.
 
 ### 1. **Merdeka LLM**

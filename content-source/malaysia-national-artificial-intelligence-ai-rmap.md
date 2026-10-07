@@ -9,7 +9,7 @@ The **National Artificial Intelligence Roadmap (AI-Rmap) for Malaysia 2021-2025*
 
 ### Vision and Mission
 
-The AI-Rmap aims to create a sustainable AI ecosystem that increases employment, boosts productivity, and enhances Malaysia's global competitiveness. This vision relies on the **Quadruple Helix partnership** model—government, academia, industry, and society working in unison to foster innovation and AI growth.
+The AI-Rmap aims to create a sustainable AI ecosystem that increases employment, boosts productivity, and enhances Malaysia's global competitiveness. This vision relies on the **Quadruple Helix partnership** model: government, academia, industry, and society working in unison to foster innovation and AI growth.
 
 ### Core Strategies
 
