@@ -67,7 +67,7 @@ This touches several places, so it is easy to miss one:
 
 - **Keep URL slugs as they are.** They match the old Wix site so search rankings carry over.
 - **Strict Content Security Policy.** No inline `style="..."` attributes and no inline `<script>` blocks. Put styles in `assets/css/styles.css` and scripts in `assets/js/main.js`. If you add anything from a new external host (a script, font, image, API or form target), add that host to `CSP_META` in `build.py` or the browser will block it.
-- **The contact form** sends through [FormSubmit.co](https://formsubmit.co/). The hidden `_honey` field catches spam bots, so leave it in.
+- **The contact form** sends through [Formspree](https://formspree.io/) (form `xwlvlnzw`). The hidden `_gotcha` field catches spam bots, so leave it in.
 - **This repo is public.** Only the site files are deployed, but everything in the repo, including the generator and notes, can be read on GitHub. Never commit secrets or private details.
 
 ## Deployment
