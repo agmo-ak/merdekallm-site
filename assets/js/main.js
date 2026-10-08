@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Contact form: progressive enhancement over FormSubmit.co's native POST.
+  // Contact form: progressive enhancement over Formspree's native POST.
   var form = document.querySelector('form[data-contact-form]');
   if (form) {
     form.addEventListener('submit', function (e) {
@@ -61,11 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
             form.reset();
             if (status) status.textContent = "Thanks. We'll be in touch shortly.";
           } else {
-            if (status) status.textContent = 'Something went wrong. Please email merdeka@agmogroup.com directly.';
+            if (status) status.textContent = 'Something went wrong. Please email hello@agmostudio.com directly.';
           }
         })
         .catch(function () {
-          if (status) status.textContent = 'Something went wrong. Please email merdeka@agmogroup.com directly.';
+          if (status) status.textContent = 'Something went wrong. Please email hello@agmostudio.com directly.';
         })
         .finally(function () {
           if (submitBtn) submitBtn.disabled = false;

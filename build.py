@@ -42,7 +42,7 @@ OG_IMAGE = f"{BASE_URL}/assets/images/og-image.png"
 GA_MEASUREMENT_ID = "G-9WQLFXK292"  # Merdeka LLM GA4 property, created 2026-09-14
 GSC_VERIFICATION = "EIqgZD8FoC7lPeDgGpcOZhCk8h2clPwHxMeJdOYbpPA"  # preserves the existing verified GSC property
 BING_VERIFICATION = "EA19F6F36BFC1851D14829CC79B727C7"  # Bing Webmaster Tools (msvalidate.01); must stay on the page to remain verified
-FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/merdeka@agmogroup.com"
+FORMSPREE_ENDPOINT = "https://formspree.io/f/xwlvlnzw"
 
 NAV = [
     ("LLM Training as a Service", "/llm-training-as-a-service/"),
@@ -77,7 +77,7 @@ ADDRESS_LINES = [
     "Jalan PJU 8, Damansara Perdana,",
     "47820 Petaling Jaya, Selangor, Malaysia.",
 ]
-EMAIL = "merdeka@agmogroup.com"
+EMAIL = "hello@agmostudio.com"
 PHONE = "+603-7664 8515"
 
 # ---------------------------------------------------------------------------
@@ -270,9 +270,9 @@ CSP_META = (
     "style-src 'self'; "
     "img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; "
     "connect-src 'self' https://www.google-analytics.com https://analytics.google.com "
-    "https://*.google-analytics.com https://*.analytics.google.com https://formsubmit.co; "
+    "https://*.google-analytics.com https://*.analytics.google.com https://formspree.io; "
     "font-src 'self'; "
-    "form-action 'self' https://formsubmit.co; "
+    "form-action 'self' https://formspree.io; "
     "base-uri 'self'; "
     "object-src 'none'"
     "\">"
@@ -355,12 +355,11 @@ def contact_section():
           </div>
         </div>
         <div class="form-card">
-          <form data-contact-form action="{FORMSUBMIT_ENDPOINT}" method="POST">
+          <form data-contact-form action="{FORMSPREE_ENDPOINT}" method="POST">
             <input type="hidden" name="_subject" value="New enquiry from merdekallm.com">
-            <input type="hidden" name="_template" value="table">
             <div class="hp-field" aria-hidden="true">
               <label for="hp">Leave this field blank</label>
-              <input id="hp" type="text" name="_honey" tabindex="-1" autocomplete="off">
+              <input id="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
             </div>
             <div class="field">
               <label for="name">Name *</label>
@@ -369,7 +368,7 @@ def contact_section():
             <div class="form-row">
               <div class="field">
                 <label for="email">Email *</label>
-                <input id="email" name="Email" type="email" required>
+                <input id="email" name="email" type="email" required>
               </div>
               <div class="field">
                 <label for="phone">Phone no. *</label>

@@ -30,25 +30,17 @@ python3 build.py    # regenerates all pages, sitemap.xml and llms.txt in place
    appearing in GA within ~48 hours of the new site going live at the real
    domain (it won't show real traffic while only tested on localhost/GitHub
    Pages default domain).
-2. ~~**Contact form**~~ — done, using FormSubmit.co (no account needed) —
-   `FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/merdeka@agmogroup.com"`
-   in `build.py`. **One thing left**: FormSubmit.co requires a one-time
-   confirmation — the *first* real submission to merdeka@agmogroup.com will
-   trigger an activation email from FormSubmit.co to that inbox; someone
-   with access needs to click "Confirm" in it once before submissions start
-   arriving normally. Until then, submissions made before confirmation are
-   silently dropped (visitors still see "Thanks — we'll be in touch
-   shortly", so it's worth doing a real test submission and confirming
-   right after the site goes live).
-   - **Anti-spam**: added a honeypot field (`_honey`, hidden off-screen via
-     `.hp-field` in styles.css) — FormSubmit auto-discards any submission
-     where it's filled in, which naive spam bots that blindly fill every
-     `<input>` will trip. Also removed the `_captcha value="false"` override
-     we'd set earlier, since that was explicitly telling FormSubmit to skip
-     its own spam filtering. If spam through the honeypot keeps showing up,
-     the next lever is FormSubmit's `_captcha` challenge — but that may
-     require switching off the AJAX endpoint (redirects to a challenge page
-     instead of a silent fetch), so it's a bigger UX tradeoff.
+2. **Contact form** — posts to Formspree form `xwlvlnzw`
+   (`FORMSPREE_ENDPOINT = "https://formspree.io/f/xwlvlnzw"` in `build.py`);
+   where submissions are delivered is set in the Formspree dashboard, not in
+   the site code. History: Formspree → FormSubmit.co (2026-09) → back to
+   Formspree (2026-10). **Check once after deploy**: send a real test
+   submission and confirm it arrives (new Formspree forms may require
+   confirming the notification email first).
+   - **Anti-spam**: honeypot field `_gotcha` (hidden off-screen via
+     `.hp-field` in styles.css) — Formspree discards submissions where it's
+     filled in. More levers are in the Formspree dashboard (reCAPTCHA,
+     allowed-domain restriction, spam filtering).
 
 ## What was preserved from the live Wix site
 
@@ -83,7 +75,7 @@ python3 build.py    # regenerates all pages, sitemap.xml and llms.txt in place
   needed.
 - **Content-Security-Policy** added (meta tag — see CSP_META in build.py).
   Locks script/style/connect/form-action down to self + the specific
-  Google Analytics and FormSubmit hosts actually used; the one inline
+  Google Analytics and Formspree hosts actually used; the one inline
   script (gtag bootstrap) is allowed via its exact SHA-256 hash rather
   than a blanket `unsafe-inline`. Removed the handful of inline
   `style="..."` attributes across the site so `style-src` didn't need

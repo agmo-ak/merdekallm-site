@@ -1017,7 +1017,7 @@ def build_legal():
       AI Sovereignty as a Service, LLM Training as a Service, or the LLM Gig Economy / Curatorship programme,
       depending on the topic you selected.</p>
       <h2>Sharing</h2>
-      <p>We do not sell your personal data. Form submissions are processed by our form provider (FormSubmit) solely
+      <p>We do not sell your personal data. Form submissions are processed by our form provider (Formspree) solely
       to deliver your enquiry to us, and are not used by them for any other purpose.</p>
       <h2>Your rights</h2>
       <p>You may ask us to access, correct, or delete the information you&rsquo;ve submitted at any time by

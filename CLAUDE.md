@@ -17,7 +17,7 @@ There are no tests, linter or package dependencies. Verify changes by rebuilding
 
 ## Architecture
 
-- `build.py`: site-wide config (nav, footer, contact details, GA ID, FormSubmit endpoint, GSC verification), the HTML shell (`page_shell`), JSON-LD helpers, the CSP meta tag, a minimal markdown-to-HTML converter, and `write_page()`. Running it calls `pages_content.build_all()`.
+- `build.py`: site-wide config (nav, footer, contact details, GA ID, Formspree endpoint, GSC verification), the HTML shell (`page_shell`), JSON-LD helpers, the CSP meta tag, a minimal markdown-to-HTML converter, and `write_page()`. Running it calls `pages_content.build_all()`.
 - `pages_content.py`: page bodies as Python f-string HTML, one `build_*()` function per page, plus blog loading, `sitemap.xml` and `llms.txt` generation. It imports helpers from `build.py`.
 - `content-source/*.md`: blog posts. Filename is the slug (`/post/<slug>/`). Frontmatter keys: `title`, `author`, `date` (YYYY-MM-DD), `readtime`.
 - `assets/`: hand-written `css/styles.css`, `js/main.js` (mobile nav + AJAX contact form submit), images.
@@ -31,7 +31,7 @@ URL slugs deliberately match the old Wix site for SEO continuity. Do not rename 
 - **CSP is strict** (`CSP_META` in `build.py`): no inline `style="..."` attributes and no inline scripts. The only inline script is the GA bootstrap, allowed by a SHA-256 hash computed from `GA_INLINE_SCRIPT` at build time. Any new external host (scripts, fetch, forms, images) must be added to the CSP or it will be blocked.
 - **Markdown converter supports only** `#` headings, paragraphs, `-`/`*` and numbered lists, `**bold**` and `*italic*`. No links, images, code or tables; extend `markdown_to_html()` if a post needs them.
 - **CSS/JS are cache-busted**: `asset_url()` in `build.py` links `styles.css` and `main.js` with a `?v=<content hash>`, because GitHub Pages caches them for 10 minutes and new HTML would otherwise render with an old stylesheet. Rebuild after editing either file so every page gets the new hash.
-- **Contact form** posts to FormSubmit.co (`FORMSUBMIT_ENDPOINT`). The `_honey` hidden field is a spam honeypot; keep it.
+- **Contact form** posts to Formspree (`FORMSPREE_ENDPOINT`, form `xwlvlnzw`). The `_gotcha` hidden field is a spam honeypot; keep it.
 - **What gets published** is decided by the "Collect site files" step in `pages.yml`: the listed root files, `assets/`, `post/`, and every top-level folder containing an `index.html`. A new root-level site file (e.g. a verification file) must be added there; a new folder of notes or source must never contain an `index.html`. The repo itself is public, so excluding files from the site does not make them private.
 - **Sitemap `lastmod`** comes from git (`last_modified()` in `pages_content.py`): today for a source file with uncommitted edits, otherwise its last commit date. All static pages share `pages_content.py`'s date.
-- `NOTES.md` holds deployment history and open items (FormSubmit activation, security headers needing a proxy, CAA record).
+- `NOTES.md` holds deployment history and open items (Formspree confirmation, security headers needing a proxy, CAA record).
