@@ -5,20 +5,22 @@ Static site generator: `build.py` + `pages_content.py` render everything in
 plain static HTML under folder-per-slug (`why-sovereignty-matters/index.html`
 etc.), matching the URL structure of the old Wix site.
 
-**Repo layout**: the generated HTML is committed at the repo root alongside
-the generator. `.github/workflows/pages.yml` deploys it on every push to
-`main`, copying only the site files into the Pages artifact, so `build.py`,
+**Repo layout**: the generated HTML is written to the repo root alongside
+the generator but is not in git (`.gitignore`). `.github/workflows/pages.yml`
+runs `build.py` and deploys the output on every push to `main`, copying only the site files into the Pages artifact, so `build.py`,
 `pages_content.py`, `content-source/` and the notes files are not served
 from merdekallm.com (Settings → Pages → Source = "GitHub Actions"). The
 repo itself is public, so they are still readable on GitHub. History:
 until 2026-10 Pages published the whole repo root, which served the source
 files too; an earlier attempt to fix that by publishing `docs/` (2026-09-19)
-broke the live site and was reverted.
+broke the live site and was reverted. Until 2026-10-09 the generated HTML
+was committed and CI did not build; a commit without a rebuild deployed stale
+pages, so CI now builds and the output left git.
 
-To rebuild after editing content or templates:
+To preview locally after editing content or templates:
 
 ```bash
-python3 build.py    # regenerates all pages, sitemap.xml and llms.txt in place
+python3 build.py    # generates all pages, sitemap.xml and llms.txt in place
 ```
 
 ## Still needs your input before this is fully live

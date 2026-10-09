@@ -9,7 +9,7 @@ It is a plain static site. A small Python script turns page templates and Markdo
 You need Python 3 and nothing else.
 
 ```bash
-python3 build.py                 # regenerate every page, sitemap.xml and llms.txt
+python3 build.py                 # generate every page, sitemap.xml and llms.txt (for local preview)
 python3 -m http.server 8420      # preview at http://localhost:8420
 ```
 
@@ -21,12 +21,12 @@ python3 -m http.server 8420      # preview at http://localhost:8420
 | `pages_content.py` | The content of each page, one `build_*()` function per page. Also builds the blog index, `sitemap.xml` and `llms.txt`. |
 | `content-source/*.md` | Blog posts, one file per post. |
 | `assets/` | Hand-written CSS, JavaScript and images. |
-| `index.html`, `*/index.html`, `post/`, `404.html`, `sitemap.xml`, `llms.txt` | **Generated output.** Do not edit these by hand: the next build overwrites them. |
+| `index.html`, `*/index.html`, `post/`, `404.html`, `sitemap.xml`, `llms.txt` | **Generated output.** Not in git (see `.gitignore`). Do not edit these by hand: the next build overwrites them. |
 | `NOTES.md` | Deployment history and open to-dos. |
 
-The generated HTML is committed to the repo. The deploy workflow does **not** run the build, so always run `python3 build.py` and commit the output along with your source change.
+The generated files are not committed. The deploy workflow runs `python3 build.py` on every push to `main`, so commit only your source changes. Run the build locally only to preview.
 
-**Using Claude Code?** The project hooks in `.claude/settings.json` do this for you. Whenever Claude edits `build.py`, `pages_content.py` or a post in `content-source/`, the site rebuilds automatically, and any build error goes straight back to Claude to fix. A second hook stops Claude from editing generated files directly. You still need to commit the regenerated output yourself. Edits you make in your own editor do not trigger the rebuild.
+**Using Claude Code?** The project hooks in `.claude/settings.json` rebuild the local preview when Claude edits a source file with its Edit or Write tool, and stop Claude from editing generated files directly. They do not run for edits made through shell commands or in your own editor. That does not matter for the live site, because CI always builds it.
 
 ## Common tasks
 
@@ -72,7 +72,7 @@ This touches several places, so it is easy to miss one:
 
 ## Deployment
 
-Every push to `main` runs `.github/workflows/pages.yml`, which copies only the site files (the root HTML files, `assets/`, `post/` and each page folder) into the Pages artifact and deploys it. Changes are usually live within a minute or two.
+Every push to `main` runs `.github/workflows/pages.yml`. It runs `python3 build.py` (Python 3.14, full git history so the sitemap `lastmod` dates are correct), then copies only the site files (the root HTML files, `assets/`, `post/` and each page folder) into the Pages artifact and deploys it. Changes are usually live within a minute or two.
 
 Two consequences:
 
@@ -83,7 +83,6 @@ Two consequences:
 
 There are no automated tests. Instead:
 
-1. Run `python3 build.py`.
-2. Check `git diff` to make sure only the pages you expected changed.
-3. Preview locally and click through the pages you touched, including on a narrow (mobile) window.
-4. Open the browser console and confirm there are no CSP errors.
+1. Run `python3 build.py`. If it fails here, it fails in CI and the site does not deploy.
+2. Preview locally and click through the pages you touched, including on a narrow (mobile) window.
+3. Open the browser console and confirm there are no CSP errors.

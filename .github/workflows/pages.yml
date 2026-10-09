@@ -1,6 +1,8 @@
-# Deploys only the generated site to GitHub Pages. The generator (build.py,
-# pages_content.py, content-source/) and repo notes stay out of the published
-# site. Requires Settings > Pages > Source = "GitHub Actions".
+# Builds the site with build.py and deploys only the generated files to GitHub
+# Pages. The generated HTML is not in git; this workflow is the only build that
+# gets published. The generator (build.py, pages_content.py, content-source/)
+# and repo notes stay out of the published site.
+# Requires Settings > Pages > Source = "GitHub Actions".
 name: Deploy Pages
 
 on:
@@ -25,6 +27,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          # last_modified() in pages_content.py reads each source file's last
+          # commit date for sitemap lastmod. A shallow clone gives every file
+          # the date of the newest commit.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Build site
+        run: python3 build.py
 
       - name: Collect site files
         run: |
