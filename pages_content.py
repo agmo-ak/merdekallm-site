@@ -1159,6 +1159,8 @@ def load_posts():
             "body_html": markdown_to_html(body_md),
             "excerpt": (excerpt[:180] + "…") if len(excerpt) > 180 else excerpt,
         })
+    # Newest first; stable sort keeps posts with the same date in filename order.
+    posts.sort(key=lambda p: p["date"], reverse=True)
     return posts
 
 
@@ -1175,10 +1177,12 @@ def pretty_date(iso):
 
 def build_blog(posts):
     cards = []
-    for p in posts:
+    for i, p in enumerate(posts):
+        # posts is sorted newest first, so the first card is the latest post.
+        latest = '<span class="tag-latest">Latest</span>' if i == 0 else ""
         cards.append(f"""
         <a class="post-card" href="/post/{p['slug']}/">
-          <div class="post-meta">{pretty_date(p['date'])} &middot; {p['readtime']}</div>
+          <div class="post-meta">{pretty_date(p['date'])} &middot; {p['readtime']}{latest}</div>
           <h3>{p['title']}</h3>
           <p>{p['excerpt']}</p>
         </a>""")

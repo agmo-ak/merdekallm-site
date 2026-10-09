@@ -286,7 +286,7 @@ section{padding:72px 0}
 .cmp-table tr.is-ours{background:color-mix(in srgb, var(--brand) 10%, transparent)}
 .cmp-table tr.is-ours th{box-shadow:inset 3px 0 0 var(--brand)}
 .cmp-table tr.is-ours td{color:var(--text);font-weight:700}
-.tag-ours{display:inline-block;margin-left:8px;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--gradient);color:#fff;vertical-align:middle}
+.tag-ours,.tag-latest{display:inline-block;margin-left:8px;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--gradient);color:#fff;vertical-align:middle}
 .tag-my{display:inline-block;margin-left:8px;font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:2px 6px;border-radius:6px;border:1px solid var(--accent-red);color:var(--accent-red);vertical-align:middle}
 .section-head .tag-my{margin-left:0}
 .bench-badge{display:inline-block;margin:12px 0 0;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--gradient);color:#fff}
