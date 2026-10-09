@@ -6,9 +6,9 @@ Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a 
 
 ## Pages
 
-- [Merdeka LLM](https://merdekallm.com/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: MerdekaLLM-Sasbadi-27b has 27B parameters, scores 84.9% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU
+- [Merdeka LLM](https://merdekallm.com/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: MerdekaLLM-Sasbadi-27b has 27B parameters, scores 84.9% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU. Its intelligence density, 3.1 MalayMMLU points per billion total parameters, is the highest in our comparison
 - [Why Sovereignty Matters](https://merdekallm.com/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure
-- [Merdeka Model Hub](https://merdekallm.com/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; 84.9% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, at 27B parameters, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance
+- [Merdeka Model Hub](https://merdekallm.com/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; 84.9% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, at 27B parameters, so it can be hosted on-premise on one GPU; the highest intelligence density, or MalayMMLU accuracy per parameter, in our comparison). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance
 - [LLM Training as a Service](https://merdekallm.com/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS
 - [LLM Gig Economy](https://merdekallm.com/llm-gig-economy/): Contribution and curatorship platform for Malaysians
 - [Become a Curator](https://merdekallm.com/curator/): Review, refine, and validate data used to train Merdeka LLM
@@ -28,6 +28,7 @@ Merdeka LLM by Agmo Group offers AI Sovereignty as a Service, LLM Training as a 
 - [Malaysia's AI Investment in Budget 2025](https://merdekallm.com/post/malaysia-s-ai-investment-in-budget-2025/): Malaysia's Budget 2025 presents a comprehensive vision for AI, technology, and digital transformation, signaling the government's strategic shift to solidify the nation as a region…
 - [Malaysia Top AI Startups](https://merdekallm.com/post/malaysia-top-ai-startups/): Malaysia is home to a growing number of AI startups, each pushing the boundaries of technology and innovation. These companies are developing cutting-edge solutions that address in…
 - [Malaysia Top Gen AI LLM Startups](https://merdekallm.com/post/malaysia-top-gen-ai-llm-startups/): Generative AI is rapidly reshaping industries across the globe, and Malaysia is emerging as a vibrant hub for this technology in Southeast Asia. With startups leveraging AI to addr…
+- [Intelligence Density: Why the Next AI Breakthroughs Will Be Smaller, Not Bigger](https://merdekallm.com/post/what-is-intelligence-density/): The most important shift in the AI race may no longer be model size. For years, progress came from scaling training runs: more GPUs, more parameters, more data. The new frontier is…
 
 ## Legal
 

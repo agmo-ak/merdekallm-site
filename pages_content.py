@@ -157,6 +157,18 @@ def size_facts():
     }
 
 
+def density_facts():
+    """Intelligence density: MalayMMLU accuracy points per billion total parameters
+    (what you must hold in memory to host it), over the models in the size chart.
+    Fails the build if another model is denser, so the 'highest' claim can't go stale."""
+    ours = float(MALAYMMLU["overall"]) / MODEL_SIZE["ours_b"]
+    others = [(r[0], float(r[2]) / MODEL_PARAMS[r[0]][0])
+              for r in PENDAKWAH_LEADERBOARD if r[0] in MODEL_PARAMS]
+    next_name, next_d = max(others, key=lambda o: o[1])
+    assert ours > next_d, f"{next_name} is denser than {MALAYMMLU['model']}: drop the 'highest density' claim"
+    return {"ours": f"{ours:.1f}", "next": next_name, "next_d": f"{next_d:.2f}", "ratio": round(ours / next_d)}
+
+
 def fmt_params(b):
     return f"{b / 1000:g}T" if b >= 1000 else f"{b:g}B"
 
@@ -245,8 +257,9 @@ def size_chart():
     return f"""
       <figure class="size-chart">
         <figcaption>
-          <strong>Model size vs MalayMMLU accuracy</strong>
-          <span>Only models whose developers publish a parameter count. Hover or tab to a point for details.</span>
+          <strong>Intelligence density: model size vs MalayMMLU accuracy</strong>
+          <span>Higher and further left means more accuracy per parameter. Only models whose developers publish a
+          parameter count. Hover or tab to a point for details.</span>
         </figcaption>
         <ul class="chart-legend">
           <li><span class="key key-ours"></span>{MALAYMMLU['model']}</li>
@@ -276,7 +289,7 @@ def size_chart():
 
 
 def local_hosting_section():
-    s, f = MODEL_SIZE, size_facts()
+    s, f, d = MODEL_SIZE, size_facts(), density_facts()
     runner_up = malaysian_runner_up()
     assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
     rows = [
@@ -297,7 +310,8 @@ def local_hosting_section():
         <span class="eyebrow">Sovereign by size</span>
         <h2>Small enough to host in a school</h2>
         <p>At {s['ours_b']}B parameters, {MALAYMMLU['model']} runs on a single GPU server, so a school can host
-        it on its own premises.</p>
+        it on its own premises. It has the highest intelligence density in our comparison: the most MalayMMLU
+        accuracy per parameter.</p>
       </div>
       {size_chart()}
       <div class="cmp-wrap">
@@ -329,6 +343,10 @@ def local_hosting_section():
           <a href="{s['rival_source']}" target="_blank" rel="noopener">Z.ai&rsquo;s GLM-5 repository</a>).</li>
           <li>A mixture-of-experts model uses only part of its parameters for each token, but all of them must be
           held in memory to serve it.</li>
+          <li>Intelligence density is MalayMMLU accuracy divided by total parameters, in points per billion:
+          {d['ours']} for {MALAYMMLU['model']}, about {d['ratio']} times the next-densest model in the chart,
+          {d['next']} ({d['next_d']}). We use total parameters because they set the hardware you need to host a
+          model; counted per active parameter, mixture-of-experts models score higher.</li>
         </ul>
       </details>
     </div>
@@ -441,12 +459,13 @@ def malaymmlu_benchmark():
 
 def small_powerful_section():
     """Homepage section: the size story, with the hub page's size chart."""
-    s = MODEL_SIZE
+    s, d = MODEL_SIZE, density_facts()
     runner_up = malaysian_runner_up()
     assert runner_up[0] == s["rival"], f"Runner-up is now {runner_up[0]}: update MODEL_SIZE"
     tiles = [
         (f"{s['ours_b']}B", "parameters, compact enough to host on-premise"),
         (f"{MALAYMMLU['overall']}%", "on MalayMMLU, the highest of the Malaysian-built models"),
+        (d["ours"], "MalayMMLU points per billion parameters, the highest intelligence density in our comparison"),
         ("1 GPU", f"to host it: a single {GPU_GB} GB GPU holds the weights"),
     ]
     tiles_html = "".join(
@@ -457,10 +476,11 @@ def small_powerful_section():
   <section id="small">
     <div class="container">
       <div class="section-head center">
-        <span class="eyebrow">Small and powerful</span>
+        <span class="eyebrow">Intelligence density</span>
         <h2>The #1 Malaysian model, small enough to run in a school</h2>
-        <p>{MALAYMMLU['model']}, our education model fine-tuned with Sasbadi, scores {MALAYMMLU['overall']}% on
-        MalayMMLU. At {s['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.</p>
+        <p>{MALAYMMLU['model']}, our Bahasa Malaysia model fine-tuned on Sasbadi&rsquo;s curriculum content, scores {MALAYMMLU['overall']}% on
+        MalayMMLU. At {s['ours_b']}B parameters it can be hosted on-premise, so student data stays in the school.
+        It delivers the most MalayMMLU accuracy per parameter of any model in our comparison.</p>
       </div>
       <div class="stat-tiles">{tiles_html}</div>
       {size_chart()}
@@ -701,7 +721,8 @@ def build_model_hub():
         "Merdeka LLM can create personalised learning experiences for students across Malaysia, while aiding educators in curriculum planning and delivering digital education tools.",
         "Tailored learning experiences, enhanced educational tools, and efficient education delivery.",
         anchor="education",
-        partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>.",
+        partner="Fine-tuned for Malaysian education in partnership with <strong>Sasbadi</strong>. Trained on formal "
+        "Bahasa Malaysia curriculum content, so it also suits agencies and organisations that write in formal BM.",
         benchmark=malaymmlu_benchmark(),
         actions='<a class="btn btn-primary" href="/#contact">Ask about this model</a>',
     )
@@ -1290,9 +1311,9 @@ def build_llms_txt(posts):
         "",
         "## Pages",
         "",
-        f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: {MALAYMMLU['model']} has {MODEL_SIZE['ours_b']}B parameters, scores {MALAYMMLU['overall']}% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU",
+        f"- [{SITE_NAME}]({BASE_URL}/): Malaysia's AI for a Sovereign and Empowered Future. Small and powerful: {MALAYMMLU['model']} has {MODEL_SIZE['ours_b']}B parameters, scores {MALAYMMLU['overall']}% on MalayMMLU (internal evaluation, the highest of the Malaysian-built models in our comparison) and runs on one GPU. Its intelligence density, {density_facts()['ours']} MalayMMLU points per billion total parameters, is the highest in our comparison",
         f"- [Why Sovereignty Matters]({BASE_URL}/why-sovereignty-matters/): AI that keeps your data in Malaysia, hosted on Malaysian infrastructure",
-        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, at 27B parameters, so it can be hosted on-premise on one GPU). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
+        f"- [Merdeka Model Hub]({BASE_URL}/merdeka-model-llm/): Real-world applications of Merdeka LLM across Legal, HR, Education, and Finance, including the education model MerdekaLLM-Sasbadi-27b (built with Sasbadi; {MALAYMMLU['overall']}% on MalayMMLU, internal evaluation, the highest of the Malaysian-built models in our comparison against the Pendakwah Teknologi leaderboard, at 27B parameters, so it can be hosted on-premise on one GPU; the highest intelligence density, or MalayMMLU accuracy per parameter, in our comparison). New versions of the Legal and HR models are coming soon; Merdeka LLM invites data partners in legal, HR and finance",
         f"- [LLM Training as a Service]({BASE_URL}/llm-training-as-a-service/): Scalable LLM training, in partnership with Phison's aiDAPTIV+ and SNS",
         f"- [LLM Gig Economy]({BASE_URL}/llm-gig-economy/): Contribution and curatorship platform for Malaysians",
         f"- [Become a Curator]({BASE_URL}/curator/): Review, refine, and validate data used to train Merdeka LLM",

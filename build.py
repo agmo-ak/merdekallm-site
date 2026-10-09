@@ -148,6 +148,10 @@ def jsonld_script(data):
 # ---------------------------------------------------------------------------
 def inline_md(text):
     text = html.escape(text, quote=False)
+    # [text](url): site paths stay in the tab, external links open a new one.
+    text = re.sub(r"\[([^\]]+)\]\((/[^\s)]*)\)", r'<a href="\2">\1</a>', text)
+    text = re.sub(r"\[([^\]]+)\]\((https://[^\s)\"]+)\)",
+                  r'<a href="\2" target="_blank" rel="noopener">\1</a>', text)
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", text)
     return text

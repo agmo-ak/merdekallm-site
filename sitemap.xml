@@ -2,52 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://merdekallm.com/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <image:image><image:loc>https://merdekallm.com/assets/images/hero-rocket.webp</image:loc><image:title>Merdeka LLM: rocket illustration representing Malaysia&#x27;s AI growth</image:title></image:image>
   </url>
   <url>
     <loc>https://merdekallm.com/why-sovereignty-matters/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/merdeka-model-llm/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/llm-training-as-a-service/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/llm-gig-economy/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/curator/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/contributor/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/blog/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/privacy-policy/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/terms-and-conditions/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/refund-policy/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/accessibility-statement/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
   </url>
   <url>
     <loc>https://merdekallm.com/post/building-ai-readiness-in-malaysia-s-public-and-private-sectors/</loc>
@@ -96,5 +96,9 @@
   <url>
     <loc>https://merdekallm.com/post/malaysia-top-gen-ai-llm-startups/</loc>
     <lastmod>2026-10-07</lastmod>
+  </url>
+  <url>
+    <loc>https://merdekallm.com/post/what-is-intelligence-density/</loc>
+    <lastmod>2026-10-09</lastmod>
   </url>
 </urlset>
